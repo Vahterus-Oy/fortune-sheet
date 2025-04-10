@@ -2,34 +2,42 @@
   max-height: 100%;
   overflow-y: auto;
   border-radius: 4px;
-  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 10px 24px 0px rgba(22, 22, 22, 0.1);
   transition: opacity 0.218s;
   background: #fff;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  /* border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2); */
   cursor: default;
   font-size: 13px;
   margin: 0;
   outline: none;
-  padding: 6px 0;
+  padding: 0;
   position: absolute;
   z-index: 1004;
   box-sizing: border-box;
   user-select: none;
+  border-radius: 0;
+  min-width: 220px;
+}
+
+.menuElement {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .fortune-context-menu input.luckysheet-mousedown-cancel {
   width: 35px;
   text-align: center;
-  margin-left: 5px;
-  margin-right: 5px;
+  /* margin-left: 5px;
+  margin-right: 5px; */
 }
 
 .fortune-context-menu-divider {
   width: "100%";
   height: 1px;
-  margin: 4px 0;
-  background-color: #e0e0e0;
+  /* margin: 4px 0; */
+  background-color: #cacaca;
 }
 
 .luckysheet-cols-menu .luckysheet-cols-menuitem {
@@ -38,11 +46,11 @@
   cursor: pointer;
   list-style: none;
   margin: 0;
-  padding: 1px 6em 1px 20px;
+  /* padding: 1px 6em 1px 20px; */
   white-space: nowrap;
   padding-left: 8px;
   vertical-align: middle;
-  padding-right: 24px;
+  padding-right: 8px;
   user-select: none;
 }
 
@@ -60,7 +68,7 @@
   cursor: pointer;
   list-style: none;
   margin: 0;
-  padding: 6px 7em 6px 30px;
+  padding: 12px 16px;
   white-space: nowrap;
   user-select: none;
 }

@@ -11567,6 +11567,8 @@ export default {
       "केवल-पढ़ने के स्तंभ पर सम्मिलित नहीं कर सकते",
     rowOverLimit: "10000 पंक्ति सीमा पार हो गई",
     columnOverLimit: "1000 स्तंभ सीमा पार हो गई",
+    lockedCell: "Lock cell",
+    unlockedCell: "Unlock cell",
   },
   comment: {
     insert: "डालें",

@@ -198,7 +198,7 @@
   pointer-events: none;
   z-index: 15;
   border: 1px solid rgb(200, 200, 200, 0.15);
-  margin: -1px 0 0 -0.5px;
+  margin: -1.1px 0 0 -0.5px;
   background: rgba(211, 226, 247, 0.15);
   display: none;
   box-sizing: content-box;

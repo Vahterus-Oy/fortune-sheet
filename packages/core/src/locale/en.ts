@@ -11562,6 +11562,8 @@ export default {
     cannotInsertOnColumnReadOnly: "Cannot insert into read-only column",
     rowOverLimit: "10000 row limit exceeded",
     columnOverLimit: "1000 column limit exceeded",
+    lockedCell: "Lock cell",
+    unlockedCell: "Unlock cell",
   },
   comment: {
     insert: "Insert",

@@ -24,7 +24,25 @@ const Template: StoryFn<typeof Workbook> = ({
   }, []);
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <Workbook {...args} data={data} onChange={onChange} />
+      <Workbook
+        {...args}
+        data={data}
+        onChange={onChange}
+        cellContextMenu={[
+          // "copy",
+          // "paste",
+          // "|",
+          // "insert-row",
+          // "hide-row",
+          // "merge",
+          "locked",
+          "locked-open",
+          "|",
+          "number-decrease",
+          "number-increase",
+        ]}
+        headerContextMenu={["hide-row", "|", "insert-row"]}
+      />
     </div>
   );
 };

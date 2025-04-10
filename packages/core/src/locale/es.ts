@@ -11531,6 +11531,8 @@ export default {
       "No se puede insertar en la columna de solo lectura",
     rowOverLimit: "Límite de 10000 filas excedido",
     columnOverLimit: "Límite de 1000 columnas excedido",
+    lockedCell: "Lock cell",
+    unlockedCell: "Unlock cell",
   },
   comment: {
     insert: "Insertar",

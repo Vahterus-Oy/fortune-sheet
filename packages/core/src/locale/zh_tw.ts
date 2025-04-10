@@ -11551,6 +11551,8 @@ export default {
     cannotInsertOnColumnReadOnly: "無法對只讀列插入",
     rowOverLimit: "超出10000行限制",
     columnOverLimit: "超出1000列限制",
+    lockedCell: "Lock cell",
+    unlockedCell: "Unlock cell",
   },
   comment: {
     insert: "新建批註",

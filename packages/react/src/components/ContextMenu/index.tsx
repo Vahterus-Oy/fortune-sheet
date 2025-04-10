@@ -16,6 +16,10 @@ import {
   api,
   isAllowEdit,
   jfrefreshgrid,
+  handleLockedCell,
+  handleUnlockedCell,
+  handleNumberDecrease,
+  handleNumberIncrease,
 } from "@fortune-sheet/core";
 import _ from "lodash";
 import React, { useContext, useRef, useCallback, useLayoutEffect } from "react";
@@ -633,21 +637,195 @@ const ContextMenu: React.FC = () => {
           </Menu>
         );
       }
+      if (name === "locked") {
+        if (!selection) return null;
+
+        const sheetIndex = getSheetIndex(context, context.currentSheetId);
+        if (sheetIndex === null) return null;
+
+        // Check if any selected cell is unlocked
+        const hasUnlockedCells = selection.row.some((r) =>
+          selection.column.some((c) => {
+            const cell = context.luckysheetfile[sheetIndex]?.data?.[r]?.[c];
+            return cell?.locked === false || cell?.locked === undefined;
+          })
+        );
+
+        // Only show lock option if there are unlocked cells
+        if (hasUnlockedCells) {
+          return (
+            <Menu
+              key="locked"
+              onClick={() => {
+                setContext((draftCtx) => {
+                  handleLockedCell(draftCtx, refs.cellInput.current!);
+                  draftCtx.contextMenu = {};
+                });
+              }}
+            >
+              <div className="menuElement">
+                <div>{rightclick.lockedCell}</div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  id="locked"
+                >
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+            </Menu>
+          );
+        }
+      }
+
+      if (name === "locked-open") {
+        if (!selection) return null;
+
+        const sheetIndex = getSheetIndex(context, context.currentSheetId);
+        if (sheetIndex === null) return null;
+
+        // Check if any selected cell is locked
+        const hasLockedCells = selection.row.some((r) =>
+          selection.column.some((c) => {
+            const cell = context.luckysheetfile[sheetIndex]?.data?.[r]?.[c];
+            return cell?.locked === true;
+          })
+        );
+
+        // Only show unlock option if there are locked cells
+        if (hasLockedCells) {
+          return (
+            <Menu
+              key="unlocked"
+              onClick={() => {
+                setContext((draftCtx) => {
+                  handleUnlockedCell(draftCtx, refs.cellInput.current!);
+                  draftCtx.contextMenu = {};
+                });
+              }}
+            >
+              <div className="menuElement">
+                <div>{rightclick.unlockedCell}</div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  id="locked-open"
+                >
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+                </svg>
+              </div>
+            </Menu>
+          );
+        }
+      }
+
+      if (name === "number-decrease") {
+        if (!selection) return null;
+
+        const sheetIndex = getSheetIndex(context, context.currentSheetId);
+        if (sheetIndex === null) return null;
+
+        return (
+          <Menu
+            key="number-decrease"
+            onClick={() => {
+              setContext((draftCtx) => {
+                handleNumberDecrease(draftCtx, refs.cellInput.current!);
+                draftCtx.contextMenu = {};
+              });
+            }}
+          >
+            <div className="menuElement">
+              <div>Decrease decimal place</div>
+              <svg
+                id="number-decrease"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 18h9M15 15l-3 3 3 3M3 11h.01" />
+                <rect width="5" height="8" x="7" y="3" rx="2.5" />
+              </svg>
+            </div>
+          </Menu>
+        );
+      }
+
+      if (name === "number-increase") {
+        if (!selection) return null;
+
+        const sheetIndex = getSheetIndex(context, context.currentSheetId);
+        if (sheetIndex === null) return null;
+
+        return (
+          <Menu
+            key="number-increase"
+            onClick={() => {
+              setContext((draftCtx) => {
+                handleNumberIncrease(draftCtx, refs.cellInput.current!);
+                draftCtx.contextMenu = {};
+              });
+            }}
+          >
+            <div className="menuElement">
+              <div>Increase decimal place</div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                id="number-increase"
+              >
+                <path d="M21 18h-9M18 21l3-3-3-3M3 11h.01" />
+                <rect width="5" height="8" x="16" y="3" rx="2.5" />
+                <rect width="5" height="8" x="7" y="3" rx="2.5" />
+              </svg>
+            </div>
+          </Menu>
+        );
+      }
       return null;
     },
     [
-      context.currentSheetId,
-      context.lang,
-      context.luckysheet_select_save,
-      context.defaultrowlen,
-      context.defaultcollen,
+      context,
       rightclick,
-      info,
       setContext,
       showAlert,
       showDialog,
-      drag,
-      generalDialog,
+      drag.noMulti,
+      info.tipRowHeightLimit,
+      info.tipColumnWidthLimit,
+      generalDialog.partiallyError,
+      generalDialog.readOnlyError,
+      generalDialog.dataNullError,
+      refs.cellInput,
     ]
   );
 
