@@ -56,6 +56,7 @@ export type Cell = {
     isShow: boolean;
   };
   hl?: { r: number; c: number; id: string };
+  locked?: boolean;
 } & CellStyle;
 
 export type CellWithRowAndCol = {

@@ -2097,9 +2097,9 @@ export function computeRowlenArr(ctx: Context, rowHeight: number, cfg: any) {
     }
 
     if (cfg.rowhidden != null && cfg.rowhidden[i] != null) {
-      rowlen = cfg.rowhidden[i];
+      rowlen = ctx.defaultrowlen; // Keep the default row height
       rowlenArr.push(rh_height);
-      continue;
+      rh_height += rowlen + 1; // Add the height to the total
     } else {
       rh_height += rowlen + 1;
     }

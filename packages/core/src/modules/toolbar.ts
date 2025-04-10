@@ -1152,6 +1152,14 @@ export function handleUnderline(ctx: Context, cellInput: HTMLDivElement) {
   toggleAttr(ctx, cellInput, "un");
 }
 
+export function handleLockedCell(ctx: Context, cellInput: HTMLDivElement) {
+  setAttr(ctx, cellInput, "locked", true);
+}
+
+export function handleUnlockedCell(ctx: Context, cellInput: HTMLDivElement) {
+  setAttr(ctx, cellInput, "locked", false);
+}
+
 export function handleHorizontalAlign(
   ctx: Context,
   cellInput: HTMLDivElement,
@@ -1597,6 +1605,8 @@ const handlerMap: Record<string, ToolbarItemClickHandler> = {
     ctx.showSearch = true;
   },
   link: handleLink,
+  locked: handleLockedCell,
+  "locked-open": handleUnlockedCell,
 };
 
 const selectedMap: Record<string, ToolbarItemSelectedFunc> = {
@@ -1604,12 +1614,16 @@ const selectedMap: Record<string, ToolbarItemSelectedFunc> = {
   italic: (cell) => cell?.it === 1,
   "strike-through": (cell) => cell?.cl === 1,
   underline: (cell) => cell?.un === 1,
+  locked: (cell) => cell?.locked === true,
+  "locked-open": (cell) => cell?.locked === false,
 };
 
 export function toolbarItemClickHandler(name: string) {
+  console.log("toolbarItemClickHandler", name);
   return handlerMap[name];
 }
 
 export function toolbarItemSelectedFunc(name: string) {
+  // console.log("toolbarItemSelectedFunc", name);
   return selectedMap[name];
 }

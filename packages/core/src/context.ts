@@ -485,6 +485,7 @@ export function defaultContext(refs: RefValues): Context {
       vt: 1,
       m: "",
       v: "",
+      locked: false,
     },
 
     groupValuesRefreshData: [],
@@ -516,8 +517,9 @@ function calcRowColSize(ctx: Context, rowCount: number, colCount: number) {
     }
 
     if (ctx.config?.rowhidden?.[r] != null) {
+      // Don't skip the row, just add its height
+      ctx.rh_height += Math.round(((rowlen as number) + 1) * ctx.zoomRatio);
       ctx.visibledatarow.push(ctx.rh_height);
-      continue;
     }
 
     // 自动行高计算

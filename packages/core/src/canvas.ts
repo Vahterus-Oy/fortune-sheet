@@ -209,32 +209,34 @@ export class Canvas {
         continue;
       }
 
-      if (this.sheetCtx.config?.rowhidden?.[r] == null) {
-        renderCtx.fillStyle = "#ffffff";
-        renderCtx.fillRect(
-          0,
-          start_r + offsetTop + firstOffset,
-          this.sheetCtx.rowHeaderWidth - 1,
-          end_r - start_r + 1 + lastOffset - firstOffset
-        );
-        renderCtx.fillStyle = "#000000";
+      // if (this.sheetCtx.config?.rowhidden?.[r] == null) {
+      renderCtx.fillStyle =
+        this.sheetCtx.config?.rowhidden?.[r] != null ? "#F0F2F5" : "#ffffff";
+      renderCtx.fillRect(
+        0,
+        start_r + offsetTop + firstOffset,
+        this.sheetCtx.rowHeaderWidth - 1,
+        end_r - start_r + 1 + lastOffset - firstOffset
+      );
+      renderCtx.fillStyle =
+        this.sheetCtx.config?.rowhidden?.[r] != null ? "#97999B" : "#000000";
 
-        // 行标题栏序列号
-        renderCtx.save(); // save scale before draw text
-        renderCtx.scale(this.sheetCtx.zoomRatio, this.sheetCtx.zoomRatio);
-        const textMetrics = getMeasureText(r + 1, renderCtx, this.sheetCtx);
+      // 行标题栏序列号
+      renderCtx.save(); // save scale before draw text
+      renderCtx.scale(this.sheetCtx.zoomRatio, this.sheetCtx.zoomRatio);
+      const textMetrics = getMeasureText(r + 1, renderCtx, this.sheetCtx);
 
-        const horizonAlignPos =
-          (this.sheetCtx.rowHeaderWidth - textMetrics.width) / 2;
-        const verticalAlignPos = start_r + (end_r - start_r) / 2 + offsetTop;
+      const horizonAlignPos =
+        (this.sheetCtx.rowHeaderWidth - textMetrics.width) / 2;
+      const verticalAlignPos = start_r + (end_r - start_r) / 2 + offsetTop;
 
-        renderCtx.fillText(
-          `${r + 1}`,
-          horizonAlignPos / this.sheetCtx.zoomRatio,
-          verticalAlignPos / this.sheetCtx.zoomRatio
-        );
-        renderCtx.restore(); // restore scale after draw text
-      }
+      renderCtx.fillText(
+        `${r + 1}`,
+        horizonAlignPos / this.sheetCtx.zoomRatio,
+        verticalAlignPos / this.sheetCtx.zoomRatio
+      );
+      renderCtx.restore(); // restore scale after draw text
+      // }
 
       // vertical
       renderCtx.beginPath();
@@ -686,9 +688,16 @@ export class Canvas {
 
       const endY = this.sheetCtx.visibledatarow[r] - scrollHeight;
 
-      if (this.sheetCtx.config?.rowhidden?.[r] != null) {
-        continue;
-      }
+      // if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+      //   // Fill the entire row with gray background
+      //   renderCtx.fillStyle = "#97999B";
+      //   renderCtx.fillRect(
+      //     -scrollWidth, // startX for the entire row
+      //     startY,
+      //     colEndX - scrollWidth, // width of the entire row
+      //     endY - startY // height of the row
+      //   );
+      // }
 
       for (let c = colStart; c <= colEnd; c += 1) {
         let startX;
@@ -1637,18 +1646,23 @@ export class Canvas {
     //   fillStyle = flowdata[r][c].tc;
     // }
 
-    if (!fillStyle) {
+    const cellsize = [
+      startX + offsetLeft + borderfix[0] + 2, // Add 2px padding to left
+      startY + offsetTop + borderfix[1] + 2, // Add 2px padding to top
+      endX - startX + borderfix[2] - (isMerge ? 1 : 0) - 5, // Subtract 4px (2px from each side) from width
+      endY - startY + borderfix[3] - 5, // Subtract 4px (2px from each side) from height
+    ];
+
+    if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+      renderCtx.fillStyle = "#F0F2F5";
+      renderCtx.fillRect(cellsize[0], cellsize[1], cellsize[2], cellsize[3]);
+    } else if (!fillStyle) {
       renderCtx.fillStyle = "#FFFFFF";
+      renderCtx.fillRect(cellsize[0], cellsize[1], cellsize[2], cellsize[3]);
     } else {
       renderCtx.fillStyle = fillStyle;
+      renderCtx.fillRect(cellsize[0], cellsize[1], cellsize[2], cellsize[3]);
     }
-
-    const cellsize = [
-      startX + offsetLeft + borderfix[0],
-      startY + offsetTop + borderfix[1],
-      endX - startX + borderfix[2] - (isMerge ? 1 : 0),
-      endY - startY + borderfix[3],
-    ];
 
     // 单元格渲染前，考虑到合并单元格会再次渲染一遍，统一放到这里
     if (
@@ -1816,7 +1830,7 @@ export class Canvas {
       return;
     }
     const cell = flowdata[r][c];
-    const cellWidth = endX - startX - 2;
+    let cellWidth = endX - startX - 2;
     const cellHeight = endY - startY - 2;
     const space_width = 2;
     const space_height = 2; // 宽高方向 间隙
@@ -1842,7 +1856,10 @@ export class Canvas {
       // 若单元格有条件格式 背景颜色
       fillStyle = checksCF.cellColor;
     }
-    if (!fillStyle) {
+    if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+      // If row is hidden, use gray background
+      renderCtx.fillStyle = "#F0F2F5";
+    } else if (!fillStyle) {
       renderCtx.fillStyle = "#FFFFFF";
     } else {
       renderCtx.fillStyle = fillStyle;
@@ -1851,11 +1868,15 @@ export class Canvas {
     const borderfix = getBorderFix();
 
     const cellsize = [
-      startX + offsetLeft + borderfix[0],
-      startY + offsetTop + borderfix[1],
-      endX - startX + borderfix[2] - (isMerge ? 1 : 0),
-      endY - startY + borderfix[3],
+      startX + offsetLeft + borderfix[0] + 2, // Add 2px padding to left
+      startY + offsetTop + borderfix[1] + 2, // Add 2px padding to top
+      endX - startX + borderfix[2] - (isMerge ? 1 : 0) - 5, // Subtract 4px (2px from each side) from width
+      endY - startY + borderfix[3] - 5, // Subtract 4px (2px from each side) from height
     ];
+
+    if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+      renderCtx.fillStyle = "#F0F2F5";
+    }
 
     // 单元格渲染前，考虑到合并单元格会再次渲染一遍，统一放到这里
     if (
@@ -1928,6 +1949,42 @@ export class Canvas {
       renderCtx.lineTo(startX + offsetLeft - 1, startY + offsetTop + ps_h);
       renderCtx.fillStyle = "#487f1e";
       renderCtx.fill();
+      renderCtx.closePath();
+    }
+
+    if (cell?.locked) {
+      const ls_w = 10 * this.sheetCtx.zoomRatio;
+      const ls_h = 10 * this.sheetCtx.zoomRatio;
+      const centerY = startY + offsetTop + (cellHeight - ls_h) / 2;
+
+      const lockIconPadding = 4; // The padding you're using (4 pixels)
+      const totalLockIconWidth = ls_w + lockIconPadding;
+      // Adjust the cell width for text rendering
+      const adjustedCellWidth = cellWidth - totalLockIconWidth;
+
+      // Store the original cell width
+      const originalCellWidth = cellWidth;
+
+      // Temporarily modify the cell width for text rendering
+      cellWidth = adjustedCellWidth;
+
+      // After text rendering, restore the original cell width
+      cellWidth = originalCellWidth;
+
+      const lockIconImage = new Image();
+      lockIconImage.src =
+        "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1sb2NrLWljb24gbHVjaWRlLWxvY2siPjxyZWN0IHdpZHRoPSIxOCIgaGVpZ2h0PSIxMSIgeD0iMyIgeT0iMTEiIHJ4PSIyIiByeT0iMiIgZmlsbD0iYmxhY2siLz48cGF0aCBkPSJNNyAxMVY3YzAtMi43NiAxLjI0LTUgNS01czUgMi4yNCA1IDV2NCIvPjwvc3ZnPg==";
+      renderCtx.drawImage(
+        lockIconImage,
+        endX + offsetLeft - ls_w - lockIconPadding,
+        centerY,
+        ls_w,
+        ls_h
+      );
+      renderCtx.fillStyle = "#666666";
+      renderCtx.fill();
+      renderCtx.lineWidth = this.sheetCtx.zoomRatio;
+      renderCtx.stroke();
       renderCtx.closePath();
     }
 
@@ -2170,7 +2227,14 @@ export class Canvas {
 
       renderCtx.save();
       renderCtx.beginPath();
-      renderCtx.rect(pos_x, pos_y, cellWidth, cellHeight);
+      renderCtx.rect(
+        pos_x,
+        pos_y,
+        cell?.locked
+          ? cellWidth - (10 * this.sheetCtx.zoomRatio + 3)
+          : cellWidth,
+        cellHeight
+      );
       renderCtx.clip();
       renderCtx.scale(this.sheetCtx.zoomRatio, this.sheetCtx.zoomRatio);
 
@@ -2247,10 +2311,15 @@ export class Canvas {
         renderCtx.fillStyle = "#ff0000";
       }
 
-      this.cellTextRender(textInfo, renderCtx, {
-        pos_x,
-        pos_y,
-      });
+      this.cellTextRender(
+        textInfo,
+        renderCtx,
+        {
+          pos_x,
+          pos_y,
+        },
+        r
+      );
 
       renderCtx.restore();
     }
@@ -2401,10 +2470,15 @@ export class Canvas {
       renderCtx.fillStyle = checksCF.textColor;
     }
 
-    this.cellTextRender(textInfo, renderCtx, {
-      pos_x,
-      pos_y,
-    });
+    this.cellTextRender(
+      textInfo,
+      renderCtx,
+      {
+        pos_x,
+        pos_y,
+      },
+      r
+    );
 
     renderCtx.restore();
   }
@@ -2568,7 +2642,12 @@ export class Canvas {
     };
   }
 
-  cellTextRender(textInfo: any, ctx: CanvasRenderingContext2D, option: any) {
+  cellTextRender(
+    textInfo: any,
+    ctx: CanvasRenderingContext2D,
+    option: any,
+    r: number
+  ) {
     if (!textInfo) {
       return;
     }
@@ -2606,9 +2685,18 @@ export class Canvas {
       const word = values[i];
       if (word.inline === true && word.style) {
         ctx.font = word.style.fontset;
-        ctx.fillStyle = word.style.fc;
+        // ctx.fillStyle = word.style.fc;
+        if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+          ctx.fillStyle = word.style.fc;
+          ctx.fillStyle = "#97999B";
+        } else {
+          ctx.fillStyle = word.style.fc;
+        }
       } else {
         ctx.font = word.style;
+        if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+          ctx.fillStyle = "#97999B";
+        }
       }
 
       // 暂时未排查到word.content第一次会是object，先做下判断来渲染，后续找到问题再复原

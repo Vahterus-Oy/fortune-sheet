@@ -197,16 +197,16 @@
   position: absolute;
   pointer-events: none;
   z-index: 15;
-  border: 1px solid #0188fb;
-  margin: -1px 0 0 -1px;
-  background: rgba(1, 136, 251, 0.15);
+  border: 1px solid rgb(200, 200, 200, 0.15);
+  margin: -1px 0 0 -0.5px;
+  background: rgba(211, 226, 247, 0.15);
   display: none;
   box-sizing: content-box;
 }
 
 .luckysheet-cs-inner-border {
   pointer-events: none;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -215,7 +215,8 @@
 }
 
 .luckysheet-cs-fillhandle {
-  position: absolute;
+  display: none;
+  /* position: absolute;
   width: 6px;
   height: 6px;
   bottom: -5px;
@@ -224,7 +225,7 @@
   border: solid 1px #fff;
   z-index: 16;
   pointer-events: auto;
-  right: -5px;
+  right: -5px; */
 }
 
 .luckysheet-cs-draghandle {
