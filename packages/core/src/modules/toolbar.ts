@@ -1619,11 +1619,9 @@ const selectedMap: Record<string, ToolbarItemSelectedFunc> = {
 };
 
 export function toolbarItemClickHandler(name: string) {
-  console.log("toolbarItemClickHandler", name);
   return handlerMap[name];
 }
 
 export function toolbarItemSelectedFunc(name: string) {
-  // console.log("toolbarItemSelectedFunc", name);
   return selectedMap[name];
 }
