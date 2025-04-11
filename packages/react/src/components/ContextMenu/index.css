@@ -27,7 +27,7 @@
 }
 
 .fortune-context-menu input.luckysheet-mousedown-cancel {
-  width: 35px;
+  /* width: 35px; */
   text-align: center;
   /* margin-left: 5px;
   margin-right: 5px; */
@@ -38,6 +38,12 @@
   height: 1px;
   /* margin: 4px 0; */
   background-color: #cacaca;
+}
+
+.insert-row-input{
+  border: none;
+  width: 10px;
+  background: transparent;
 }
 
 .luckysheet-cols-menu .luckysheet-cols-menuitem {

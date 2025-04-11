@@ -29,12 +29,6 @@ const Template: StoryFn<typeof Workbook> = ({
         data={data}
         onChange={onChange}
         cellContextMenu={[
-          // "copy",
-          // "paste",
-          // "|",
-          // "insert-row",
-          // "hide-row",
-          // "merge",
           "locked",
           "locked-open",
           "|",

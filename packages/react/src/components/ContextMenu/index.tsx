@@ -211,32 +211,105 @@ const ContextMenu: React.FC = () => {
                 }}
               >
                 <>
-                  {_.startsWith(context.lang ?? "", "zh") && (
-                    <>
-                      {rightclick.to}
-                      <span className={`luckysheet-cols-rows-shift-${dir}`}>
-                        {(rightclick as any)[dir]}
+                  <div className="menuElement">
+                    <div>
+                      {/* {_.startsWith(context.lang ?? "", "zh") && (
+                        <>
+                          {rightclick.to}
+                          <span className={`luckysheet-cols-rows-shift-${dir}`}>
+                            {(rightclick as any)[dir]}
+                          </span>
+                        </>
+                      )} */}
+                      {`${rightclick.insert}`}
+                      <input
+                        onClick={(e) => e.stopPropagation()}
+                        onKeyDown={(e) => e.stopPropagation()}
+                        tabIndex={0}
+                        type="text"
+                        className="luckysheet-mousedown-cancel insert-row-input"
+                        placeholder={rightclick.number}
+                        defaultValue="1"
+                        disabled
+                      />
+                      <span className="luckysheet-cols-rows-shift-word luckysheet-mousedown-cancel">
+                        row {dir === "top" ? "above" : "below"}
                       </span>
-                    </>
-                  )}
-                  {`${rightclick.insert}  `}
-                  <input
-                    onClick={(e) => e.stopPropagation()}
-                    onKeyDown={(e) => e.stopPropagation()}
-                    tabIndex={0}
-                    type="text"
-                    className="luckysheet-mousedown-cancel"
-                    placeholder={rightclick.number}
-                    defaultValue="1"
-                  />
-                  <span className="luckysheet-cols-rows-shift-word luckysheet-mousedown-cancel">
-                    {`${rightclick.row}  `}
-                  </span>
-                  {!_.startsWith(context.lang ?? "", "zh") && (
+                    </div>
+                    {dir === "top" ? (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="2"
+                          y="8.66675"
+                          width="12"
+                          height="5.33333"
+                          rx="1"
+                          stroke="black"
+                          strokeWidth="1.25"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M8 2V6"
+                          stroke="black"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M10 4L6 4"
+                          stroke="black"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="14"
+                          y="7.33325"
+                          width="12"
+                          height="5.33333"
+                          rx="1"
+                          transform="rotate(-180 14 7.33325)"
+                          stroke="black"
+                          strokeWidth="1.25"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M8 14L8 10"
+                          stroke="black"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M6 12L10 12"
+                          stroke="black"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  {/* {!_.startsWith(context.lang ?? "", "zh") && (
                     <span className={`luckysheet-cols-rows-shift-${dir}`}>
                       {(rightclick as any)[dir]}
                     </span>
-                  )}
+                  )} */}
                 </>
               </Menu>
             ));
@@ -345,9 +418,25 @@ const ContextMenu: React.FC = () => {
         );
       }
       if (name === "hide-row") {
+        const selectedRows = selection?.row || [];
+        const isAnyRowHidden = selectedRows.some(
+          (rowIndex) => context.config.rowhidden?.[rowIndex] !== undefined
+        );
+
+        // Only show hide/show options based on current state
+        let menuItems = [];
+        if (selectedRows?.every((val) => val === selectedRows[0])) {
+          if (isAnyRowHidden) {
+            menuItems = ["showHide"];
+          } else {
+            menuItems = ["hideSelected"];
+          }
+        } else {
+          menuItems = ["showHide", "hideSelected"];
+        }
         return (
           selection?.row_select === true &&
-          ["hideSelected", "showHide"].map((item) => (
+          menuItems.map((item) => (
             <Menu
               key={item}
               onClick={() => {
@@ -365,7 +454,50 @@ const ContextMenu: React.FC = () => {
                 });
               }}
             >
-              {(rightclick as any)[item] + rightclick.row}
+              {item === "hideSelected" ? (
+                <div className="menuElement">
+                  <div>Hide row</div>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clipPath="url(#clip0_6931_5484)">
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M0.890415 0.89131C1.13449 0.647233 1.53022 0.647233 1.7743 0.89131L15.1076 14.2246C15.3517 14.4687 15.3517 14.8644 15.1076 15.1085C14.8636 15.3526 14.4678 15.3526 14.2237 15.1085L11.5504 12.4352C10.7006 12.8703 9.77686 13.1462 8.82484 13.2477C7.71364 13.3661 6.58996 13.2441 5.53006 12.89C4.47017 12.5358 3.49884 11.9579 2.682 11.1953C1.86515 10.4327 1.22191 9.50329 0.795898 8.47018C0.793065 8.46331 0.790354 8.45639 0.787767 8.44942C0.680119 8.15942 0.680119 7.84042 0.787767 7.55042C0.790354 7.54345 0.793065 7.53653 0.795899 7.52966C1.33719 6.21699 2.22477 5.082 3.35722 4.242L0.890415 1.77519C0.646337 1.53112 0.646337 1.13539 0.890415 0.89131ZM9.35989 10.2447L10.6122 11.497C10.0033 11.7623 9.356 11.934 8.69238 12.0047C7.75945 12.1041 6.81604 12.0017 5.92618 11.7044C5.03632 11.4071 4.22082 10.9218 3.53502 10.2816C2.85353 9.64533 2.31596 8.87083 1.95827 8.01C1.95662 8.00338 1.95662 7.99646 1.95827 7.98984C2.43723 6.83716 3.23463 5.84865 4.25265 5.13743L5.75428 6.63906C5.50343 7.05282 5.36977 7.5314 5.37404 8.02282C5.38002 8.71108 5.65609 9.36947 6.14279 9.85616C6.62948 10.3429 7.28787 10.6189 7.97613 10.6249C8.46755 10.6292 8.94613 10.4955 9.35989 10.2447ZM8.42316 9.30793L6.69102 7.57579C6.64574 7.71536 6.6227 7.86253 6.62399 8.01196C6.62713 8.37248 6.77173 8.71735 7.02667 8.97228C7.28161 9.22722 7.62647 9.37182 7.98699 9.37496C8.13642 9.37626 8.28359 9.35321 8.42316 9.30793ZM7.2283 4.00453C8.64571 3.83562 10.0795 4.13525 11.3106 4.85767C12.5367 5.57713 13.4947 6.67654 14.0398 7.98915C14.0414 7.99577 14.0414 8.0027 14.0398 8.00933C13.817 8.54539 13.5238 9.04943 13.1679 9.50814C12.9563 9.78086 13.0058 10.1735 13.2785 10.3851C13.5513 10.5967 13.9439 10.5471 14.1555 10.2744C14.5837 9.72243 14.9357 9.11538 15.2021 8.46957C15.205 8.46268 15.2077 8.45574 15.2103 8.44876C15.3179 8.15876 15.3179 7.83976 15.2103 7.54976C15.2077 7.54283 15.205 7.53596 15.2022 7.52913C14.5543 5.95701 13.4098 4.64012 11.9432 3.77957C10.4767 2.91902 8.76881 2.5621 7.08038 2.76331C6.73763 2.80416 6.49288 3.11513 6.53373 3.45788C6.57458 3.80063 6.88554 4.04538 7.2283 4.00453Z"
+                        fill="black"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_6931_5484">
+                        <rect width="16" height="16" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+              ) : (
+                <div className="menuElement">
+                  <div>Unhide row </div>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M4.36051 5.064C5.43715 4.34342 6.70351 3.95874 7.99903 3.95874C9.29456 3.95874 10.5609 4.34342 11.6376 5.064C12.7093 5.7813 13.545 6.79929 14.0398 7.98993C14.0415 7.99654 14.0415 8.00345 14.0398 8.01007C13.545 9.2007 12.7093 10.2187 11.6376 10.936C10.5609 11.6566 9.29456 12.0413 7.99903 12.0413C6.70351 12.0413 5.43715 11.6566 4.36051 10.936C3.28878 10.2187 2.45308 9.2007 1.95827 8.01007C1.95662 8.00345 1.95662 7.99654 1.95827 7.98992C2.45308 6.79929 3.28878 5.7813 4.36051 5.064ZM7.99903 2.70874C6.45595 2.70874 4.94762 3.16692 3.66525 4.02519C2.38288 4.88347 1.38424 6.10318 0.795911 7.5297C0.793073 7.53659 0.790358 7.54352 0.787767 7.5505C0.680119 7.8405 0.680119 8.1595 0.787767 8.4495C0.790358 8.45647 0.793073 8.46341 0.795911 8.47029C1.38424 9.89681 2.38288 11.1165 3.66525 11.9748C4.94762 12.8331 6.45595 13.2913 7.99903 13.2913C9.54212 13.2913 11.0505 12.8331 12.3328 11.9748C13.6152 11.1165 14.6138 9.89681 15.2022 8.47029C15.205 8.46341 15.2077 8.45647 15.2103 8.4495C15.318 8.1595 15.318 7.8405 15.2103 7.5505C15.2077 7.54352 15.205 7.53659 15.2022 7.5297C14.6138 6.10318 13.6152 4.88347 12.3328 4.02519C11.0505 3.16692 9.54212 2.70874 7.99903 2.70874ZM6.62402 8C6.62402 7.24061 7.23963 6.625 7.99902 6.625C8.75842 6.625 9.37402 7.24061 9.37402 8C9.37402 8.75939 8.75842 9.375 7.99902 9.375C7.23963 9.375 6.62402 8.75939 6.62402 8ZM7.99902 5.375C6.54928 5.375 5.37402 6.55025 5.37402 8C5.37402 9.44975 6.54928 10.625 7.99902 10.625C9.44877 10.625 10.624 9.44975 10.624 8C10.624 6.55025 9.44877 5.375 7.99902 5.375Z"
+                      fill="black"
+                    />
+                  </svg>
+                </div>
+              )}
             </Menu>
           ))
         );
@@ -866,6 +998,11 @@ const ContextMenu: React.FC = () => {
         draftCtx.contextMenu.y = top;
       });
     }
+    console.log(
+      "headerContextMenu",
+      settings.headerContextMenu,
+      context.contextMenu.headerMenu
+    );
   }, [contextMenu.x, contextMenu.y, refs.workbookContainer, setContext]);
 
   if (_.isEmpty(context.contextMenu)) return null;
@@ -877,7 +1014,7 @@ const ContextMenu: React.FC = () => {
       onContextMenu={(e) => e.stopPropagation()}
       style={{ left: contextMenu.x, top: contextMenu.y }}
     >
-      {context.contextMenu.headerMenu === true
+      {context.contextMenu.headerMenu
         ? settings.headerContextMenu.map((menu, i) => getMenuElement(menu, i))
         : settings.cellContextMenu.map((menu, i) => getMenuElement(menu, i))}
     </div>
