@@ -368,8 +368,27 @@ const ContextMenu: React.FC = () => {
         );
       }
       if (name === "delete-row") {
+        const rowRangeAllowed = (() => {
+          if (!selection?.row_select || !selection.row) return false;
+
+          const [st_index, ed_index] = selection.row;
+          const sheetIndex = getSheetIndex(context, context.currentSheetId);
+          if (sheetIndex == null) return false;
+
+          const addedRow =
+            context.luckysheetfile[sheetIndex]?.config?.addedRow || {};
+
+          // eslint-disable-next-line no-plusplus
+          for (let r = st_index; r <= ed_index; r++) {
+            if (!Object.prototype.hasOwnProperty.call(addedRow, r.toString())) {
+              return false;
+            }
+          }
+
+          return true;
+        })();
         return (
-          selection?.row_select && (
+          rowRangeAllowed && (
             <Menu
               key="delete-row"
               onClick={() => {
@@ -411,8 +430,23 @@ const ContextMenu: React.FC = () => {
                 );
               }}
             >
-              {rightclick.deleteSelected}
-              {rightclick.row}
+              <div className="menuElement">
+                Delete row
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M5.95833 2.66659C5.95833 2.53652 6.02966 2.35414 6.19194 2.19186C6.35423 2.02958 6.5366 1.95825 6.66667 1.95825H9.33333C9.4634 1.95825 9.64577 2.02958 9.80806 2.19186C9.97034 2.35414 10.0417 2.53652 10.0417 2.66659V3.37492H5.95833V2.66659ZM4.70833 3.37492V2.66659C4.70833 2.12998 4.97034 1.64569 5.30806 1.30798C5.64577 0.970261 6.13006 0.708252 6.66667 0.708252H9.33333C9.86994 0.708252 10.3542 0.970261 10.6919 1.30798C11.0297 1.64569 11.2917 2.12998 11.2917 2.66659V3.37492H12.5554C12.5882 3.36955 12.6218 3.36673 12.6561 3.36667C12.6912 3.36661 12.7255 3.36943 12.759 3.37492H14C14.3452 3.37492 14.625 3.65474 14.625 3.99992C14.625 4.3451 14.3452 4.62492 14 4.62492H13.2833L13.2987 13.3239C13.2997 13.8605 13.0385 14.3452 12.7014 14.6836C12.3643 15.0219 11.8805 15.2847 11.3439 15.2857L4.67721 15.2975C4.14061 15.2984 3.65586 15.0373 3.31755 14.7001C2.97923 14.363 2.71637 13.8792 2.71542 13.3426L2.7 4.62492H2C1.65482 4.62492 1.375 4.3451 1.375 3.99992C1.375 3.65474 1.65482 3.37492 2 3.37492H4.70833ZM10.6667 4.62492H5.33333H3.95L3.96542 13.3404C3.96565 13.4705 4.03729 13.6527 4.19986 13.8147C4.36244 13.9767 4.54494 14.0477 4.675 14.0475L11.3417 14.0357C11.4717 14.0354 11.654 13.9638 11.816 13.8012C11.978 13.6387 12.049 13.4562 12.0487 13.3261L12.0333 4.62492H10.6667ZM6.66667 6.70825C7.01184 6.70825 7.29167 6.98807 7.29167 7.33325V11.3333C7.29167 11.6784 7.01184 11.9583 6.66667 11.9583C6.32149 11.9583 6.04167 11.6784 6.04167 11.3333V7.33325C6.04167 6.98807 6.32149 6.70825 6.66667 6.70825ZM9.95833 7.33325C9.95833 6.98807 9.67851 6.70825 9.33333 6.70825C8.98815 6.70825 8.70833 6.98807 8.70833 7.33325V11.3333C8.70833 11.6784 8.98815 11.9583 9.33333 11.9583C9.67851 11.9583 9.95833 11.6784 9.95833 11.3333V7.33325Z"
+                    fill="black"
+                  />
+                </svg>
+              </div>
             </Menu>
           )
         );
@@ -998,11 +1032,6 @@ const ContextMenu: React.FC = () => {
         draftCtx.contextMenu.y = top;
       });
     }
-    console.log(
-      "headerContextMenu",
-      settings.headerContextMenu,
-      context.contextMenu.headerMenu
-    );
   }, [contextMenu.x, contextMenu.y, refs.workbookContainer, setContext]);
 
   if (_.isEmpty(context.contextMenu)) return null;

@@ -35,7 +35,7 @@ const Template: StoryFn<typeof Workbook> = ({
           "number-decrease",
           "number-increase",
         ]}
-        headerContextMenu={["hide-row", "|", "insert-row"]}
+        headerContextMenu={["hide-row", "|", "insert-row", "delete-row"]}
       />
     </div>
   );

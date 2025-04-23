@@ -101,6 +101,7 @@ export type SheetConfig = {
   rowlen?: Record<string, number>; // 表格行高
   columnlen?: Record<string, number>; // 表格列宽
   rowhidden?: Record<string, number>; // 隐藏行
+  addedRow?: Record<string, number>; // 新增行
   colhidden?: Record<string, number>; // 隐藏列
   customHeight?: Record<string, number>;
   customWidth?: Record<string, number>;
