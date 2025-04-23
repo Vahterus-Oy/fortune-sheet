@@ -209,7 +209,7 @@ const ColumnHeader: React.FC = () => {
       ref={containerRef}
       className="fortune-col-header"
       style={{
-        height: context.columnHeaderHeight - 1.5,
+        height: Math.max(context.columnHeaderHeight, 27) - 1,
       }}
       onMouseMove={onMouseMove}
       onMouseDown={onMouseDown}

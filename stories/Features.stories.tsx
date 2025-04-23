@@ -24,6 +24,7 @@ const Template: StoryFn<typeof Workbook> = ({
   }, []);
   return (
     <div style={{ width: "100%", height: "100vh" }}>
+      <div style={{ width: "100%", height: "500px" }} />
       <Workbook
         {...args}
         data={data}
@@ -36,18 +37,28 @@ const Template: StoryFn<typeof Workbook> = ({
           "number-increase",
         ]}
         headerContextMenu={["hide-row", "|", "insert-row", "delete-row"]}
+        toolbarItems={[
+          "bold",
+          "italic",
+          "|",
+          "number-decrease",
+          "number-increase",
+          "|",
+          "locked",
+          "locked-open",
+        ]}
       />
     </div>
   );
 };
 
-export const Basic = Template.bind({});
+// export const Basic = Template.bind({});
 // @ts-ignore
-Basic.args = { data: [cell] };
+// Basic.args = { data: [cell] };
 
-export const Formula = Template.bind({});
-// @ts-ignore
-Formula.args = { data: [formula] };
+// export const Formula = Template.bind({});
+// // @ts-ignore
+// Formula.args = { data: [formula] };
 
 export const Empty = Template.bind({});
 Empty.args = { data: [empty] };

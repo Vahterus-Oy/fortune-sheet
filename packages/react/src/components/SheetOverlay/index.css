@@ -64,7 +64,7 @@
   padding: 0;
   cursor: default;
   flex: 1;
-  height: 19px;
+  height: 27px;
   outline-style: none;
   position: relative;
 }
@@ -104,7 +104,7 @@
 
 .fortune-left-top {
   width: 44.5px;
-  height: 18.5px;
+  height: 25px;
   border: solid 0 #dfdfdf;
   position: relative;
   padding-top: 0;
@@ -470,7 +470,7 @@
 .fortune-cols-freeze-handle,
 .fortune-rows-freeze-handle,
 .fortune-freeze-drag-line {
-  /*display: none;*/
+  display: none;
   -webkit-user-drag: none;
   user-select: none;
   position: absolute;

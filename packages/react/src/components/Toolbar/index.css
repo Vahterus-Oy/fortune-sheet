@@ -1,10 +1,10 @@
 .fortune-toolbar {
   display: flex;
   flex-direction: row;
-  background: #fafafc;
+  /* background: #fafafc; */
   position: relative;
-  padding: 5px 0px 3px 15px;
-  border-bottom: 1px solid #d4d4d4;
+  padding: 10px;
+  border-bottom: 1px solid #E6E6E6;
   white-space: nowrap;
   align-items: center;
 }

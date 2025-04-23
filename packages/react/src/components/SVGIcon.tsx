@@ -7,7 +7,7 @@ type Props = {
   style?: CSSProperties;
 };
 
-const SVGIcon: React.FC<Props> = ({ width = 24, height = 24, name, style }) => (
+const SVGIcon: React.FC<Props> = ({ width = 18, height = 18, name, style }) => (
   <svg width={width} height={height} style={style} aria-hidden="true">
     <use xlinkHref={`#${name}`} />
   </svg>

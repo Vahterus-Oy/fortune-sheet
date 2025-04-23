@@ -115,6 +115,8 @@ export class Canvas {
 
   measureTextCacheTimeOut: any;
 
+  columnHeaderHeight: number; // ✅ Add this line
+
   cellOverflowMapCache: any;
 
   constructor(
@@ -124,6 +126,10 @@ export class Canvas {
     this.canvasElement = canvasElement;
     this.sheetCtx = ctx;
     this.cellOverflowMapCache = {};
+    this.columnHeaderHeight = Math.max(
+      27,
+      this.sheetCtx.columnHeaderHeight || 0
+    );
   }
 
   drawRowHeader(scrollHeight: number, drawHeight?: number, offsetTop?: number) {
@@ -132,7 +138,7 @@ export class Canvas {
     }
 
     if (_.isNil(offsetTop)) {
-      offsetTop = this.sheetCtx.columnHeaderHeight;
+      offsetTop = this.columnHeaderHeight;
     }
 
     const renderCtx = this.canvasElement.getContext("2d");
@@ -335,12 +341,7 @@ export class Canvas {
       this.sheetCtx.devicePixelRatio,
       this.sheetCtx.devicePixelRatio
     );
-    renderCtx.clearRect(
-      offsetLeft,
-      0,
-      drawWidth,
-      this.sheetCtx.columnHeaderHeight - 1
-    );
+    renderCtx.clearRect(offsetLeft, 0, drawWidth, this.columnHeaderHeight - 1);
 
     renderCtx.font = defaultFont(this.sheetCtx.defaultFontSize);
     // @ts-ignore
@@ -367,12 +368,7 @@ export class Canvas {
 
     renderCtx.save();
     renderCtx.beginPath();
-    renderCtx.rect(
-      offsetLeft - 1,
-      0,
-      drawWidth,
-      this.sheetCtx.columnHeaderHeight - 1
-    );
+    renderCtx.rect(offsetLeft - 1, 0, drawWidth, this.columnHeaderHeight - 1);
     renderCtx.clip();
 
     let end_c;
@@ -395,7 +391,7 @@ export class Canvas {
           c,
           start_c + offsetLeft - 1,
           end_c - start_c,
-          this.sheetCtx.columnHeaderHeight - 1,
+          this.columnHeaderHeight - 1,
           renderCtx
         ) === false
       ) {
@@ -408,7 +404,7 @@ export class Canvas {
           start_c + offsetLeft - 1,
           0,
           end_c - start_c,
-          this.sheetCtx.columnHeaderHeight - 1
+          this.columnHeaderHeight - 1
         );
         renderCtx.fillStyle = "#000000";
 
@@ -421,9 +417,7 @@ export class Canvas {
         const horizonAlignPos = Math.round(
           start_c + (end_c - start_c) / 2 + offsetLeft - textMetrics.width / 2
         );
-        const verticalAlignPos = Math.round(
-          this.sheetCtx.columnHeaderHeight / 2
-        );
+        const verticalAlignPos = Math.round(this.columnHeaderHeight / 2);
 
         renderCtx.fillText(
           abc,
@@ -443,7 +437,7 @@ export class Canvas {
         renderCtx.moveTo(end_c + offsetLeft - 4 + bodrder05, 0);
         renderCtx.lineTo(
           end_c + offsetLeft - 4 + bodrder05,
-          this.sheetCtx.columnHeaderHeight - 2
+          this.columnHeaderHeight - 2
         );
         renderCtx.lineWidth = 1;
         renderCtx.strokeStyle = defaultStyle.strokeStyle;
@@ -457,7 +451,7 @@ export class Canvas {
         renderCtx.moveTo(end_c + offsetLeft - 2 + bodrder05, 0);
         renderCtx.lineTo(
           end_c + offsetLeft - 2 + bodrder05,
-          this.sheetCtx.columnHeaderHeight - 2
+          this.columnHeaderHeight - 2
         );
 
         renderCtx.lineWidth = 1;
@@ -474,7 +468,7 @@ export class Canvas {
         renderCtx.moveTo(preEndC + offsetLeft + bodrder05, 0);
         renderCtx.lineTo(
           preEndC + offsetLeft + bodrder05,
-          this.sheetCtx.columnHeaderHeight - 2
+          this.columnHeaderHeight - 2
         );
         renderCtx.closePath();
         renderCtx.stroke();
@@ -484,11 +478,11 @@ export class Canvas {
       renderCtx.beginPath();
       renderCtx.moveTo(
         start_c + offsetLeft - 1,
-        this.sheetCtx.columnHeaderHeight - 2 + bodrder05
+        this.columnHeaderHeight - 2 + bodrder05
       );
       renderCtx.lineTo(
         end_c + offsetLeft - 1,
-        this.sheetCtx.columnHeaderHeight - 2 + bodrder05
+        this.columnHeaderHeight - 2 + bodrder05
       );
       renderCtx.stroke();
       renderCtx.closePath();
@@ -500,7 +494,7 @@ export class Canvas {
         c,
         start_c + offsetLeft - 1,
         end_c - start_c,
-        this.sheetCtx.columnHeaderHeight - 1,
+        this.columnHeaderHeight - 1,
         renderCtx
       );
     }
@@ -550,7 +544,7 @@ export class Canvas {
       offsetLeft = this.sheetCtx.rowHeaderWidth;
     }
     if (offsetTop === undefined) {
-      offsetTop = this.sheetCtx.columnHeaderHeight;
+      offsetTop = this.columnHeaderHeight;
     }
 
     if (columnOffsetCell === undefined) {

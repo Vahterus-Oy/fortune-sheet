@@ -1,5 +1,6 @@
 const data = {
   name: "Cell",
+  defaultRowHeight: 25,
   config: {
     rowReadOnly: {
       2: 1,
