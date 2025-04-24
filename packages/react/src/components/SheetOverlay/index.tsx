@@ -494,8 +494,8 @@ const SheetOverlay: React.FC = () => {
           onClick={onLeftTopClick}
           tabIndex={0}
           style={{
-            width: context.rowHeaderWidth - 2,
-            height: Math.max(context.columnHeaderHeight, 27) - 2,
+            width: context.rowHeaderWidth - 4,
+            height: Math.max(context.columnHeaderHeight, 27) - 4,
           }}
         />
         <ColumnHeader />

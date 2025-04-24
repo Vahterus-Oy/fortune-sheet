@@ -34,9 +34,12 @@ import {
   createFilter,
   clearFilter,
   applyLocation,
+  insertRowCol,
+  hideSelected,
+  showSelected,
 } from "@fortune-sheet/core";
 import _ from "lodash";
-import WorkbookContext from "../../context";
+import WorkbookContext, { SetContextOptions } from "../../context";
 import "./index.css";
 import Button from "./Button";
 import Divider, { MenuDivider } from "./Divider";
@@ -53,6 +56,7 @@ import CustomButton from "./CustomButton";
 import { CustomColor } from "./CustomColor";
 import CustomBorder from "./CustomBorder";
 import { FormatSearch } from "../FormatSearch";
+import { useAlert } from "../../hooks/useAlert";
 
 const Toolbar: React.FC<{
   setMoreItems: React.Dispatch<React.SetStateAction<React.ReactNode>>;
@@ -65,6 +69,7 @@ const Toolbar: React.FC<{
   const [toolbarWrapIndex, setToolbarWrapIndex] = useState(-1); // -1 means pending for item location calculation
   const [itemLocations, setItemLocations] = useState<number[]>([]);
   const { showDialog, hideDialog } = useDialog();
+  const { showAlert } = useAlert();
   const firstSelection = context.luckysheet_select_save?.[0];
   const flowdata = getFlowdata(context);
   contextRef.current = context;
@@ -1405,6 +1410,102 @@ const Toolbar: React.FC<{
           </Combo>
         );
       }
+
+      if (name === "insert-row") {
+        return firstSelection?.column_select
+          ? null
+          : ["top", "bottom"].map((dir) => (
+              <Button
+                iconId={`${name}-${dir}`}
+                tooltip={toolbar[`${name}-${dir === "top" ? "top" : "bottom"}`]}
+                key={`${name}-${dir}`}
+                onClick={() => {
+                  const position =
+                    context.luckysheet_select_save?.[0]?.row?.[0];
+                  if (position == null) return;
+                  const direction = dir === "top" ? "lefttop" : "rightbottom";
+                  const insertRowColOp: SetContextOptions["insertRowColOp"] = {
+                    type: "row",
+                    index: position,
+                    count: 1,
+                    direction,
+                    id: context.currentSheetId,
+                  };
+                  setContext(
+                    (draftCtx) => {
+                      try {
+                        insertRowCol(draftCtx, insertRowColOp);
+                        draftCtx.contextMenu = {};
+                      } catch (err: any) {
+                        if (err.message === "maxExceeded")
+                          showAlert("Insert row failed", "ok");
+                        else if (err.message === "readOnly")
+                          showAlert("Insert row failed", "ok");
+
+                        draftCtx.contextMenu = {};
+                      }
+                    },
+                    { insertRowColOp }
+                  );
+                }}
+              />
+            ));
+      }
+
+      if (name === "hide-row") {
+        return ["hideSelected", "showHide"].map((item) => (
+          <Button
+            iconId={item === "hideSelected" ? "hide-row" : "unhide-row"}
+            tooltip={
+              toolbar[item === "hideSelected" ? "hide-row" : "unhide-row"]
+            }
+            key={item === "hideSelected" ? "hide-row" : "unhide-row"}
+            onClick={() => {
+              setContext((draftCtx) => {
+                let msg = "";
+                if (item === "hideSelected") {
+                  msg = hideSelected(draftCtx, "row");
+                } else if (item === "showHide") {
+                  showSelected(draftCtx, "row");
+                }
+                if (msg === "noMulti") {
+                  showDialog(
+                    item === "hideSelected"
+                      ? "Hide row failed"
+                      : "Unhide row failed"
+                  );
+                }
+                draftCtx.contextMenu = {};
+              });
+            }}
+          />
+        ));
+      }
+
+      if (name === "help") {
+        return (
+          <Button iconId="" tooltip={tooltip} key={name}>
+            <a
+              href="https://docs.vahterus.cloud/doc/data-sheet-quick-reference-KApok1NZHL"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="fortune-toolbar-help"
+            >
+              Help
+            </a>
+          </Button>
+        );
+      }
+
+      // TODO: Do the on click method for reset-datasheet
+      if (name === "reset-datasheet") {
+        return (
+          <Button iconId="" tooltip={tooltip} key={name}>
+            <span className="fortune-toolbar-help">Reset data sheet</span>
+          </Button>
+        );
+      }
+
       return (
         <Button
           iconId={name}
@@ -1426,40 +1527,95 @@ const Toolbar: React.FC<{
     [
       toolbar,
       cell,
-      setContext,
-      refs.cellInput,
-      refs.fxInput,
       refs.globalCache,
-      defaultFormat,
-      align,
-      handleUndo,
-      handleRedo,
-      flowdata,
-      formula,
-      showDialog,
-      hideDialog,
-      merge,
-      border,
-      freezen,
-      screenshot,
-      sort,
-      textWrap,
-      rotation,
-      filter,
-      splitText,
-      findAndReplace,
-      context.luckysheet_select_save,
-      context.defaultFontSize,
-      context.allowEdit,
-      comment,
-      fontarray,
-      hideSubMenu,
-      showSubMenu,
+      refs.cellInput,
       refs.canvas,
-      customColor,
-      customStyle,
+      refs.fxInput,
+      setContext,
+      defaultFormat,
       toolbarFormat.moreCurrency,
       toolbarFormat.moreNumber,
+      showSubMenu,
+      hideSubMenu,
+      showDialog,
+      hideDialog,
+      fontarray,
+      context.defaultFontSize,
+      context.allowEdit,
+      context.luckysheet_select_save,
+      context.currentSheetId,
+      align.left,
+      align.center,
+      align.right,
+      align.top,
+      align.middle,
+      align.bottom,
+      handleUndo,
+      handleRedo,
+      screenshot.screenshotTipSuccess,
+      splitText.tipNoSelect,
+      splitText.tipNoMulti,
+      splitText.tipNoMultiColumn,
+      findAndReplace.location,
+      findAndReplace.locationFormula,
+      findAndReplace.locationDate,
+      findAndReplace.locationDigital,
+      findAndReplace.locationString,
+      findAndReplace.locationError,
+      findAndReplace.locationRowSpan,
+      findAndReplace.columnSpan,
+      findAndReplace.locationTipNotFindCell,
+      findAndReplace.locationTiplessTwoRow,
+      findAndReplace.locationTiplessTwoColumn,
+      freezen.noSeletionError,
+      freezen.freezenRowRange,
+      freezen.freezenColumnRange,
+      freezen.freezenRCRange,
+      freezen.freezenCancel,
+      flowdata,
+      comment.edit,
+      comment.delete,
+      comment.showOne,
+      comment.showAll,
+      comment.insert,
+      formula.sum,
+      formula.average,
+      formula.count,
+      formula.max,
+      formula.min,
+      formula.find,
+      merge.mergeAll,
+      merge.mergeV,
+      merge.mergeH,
+      merge.mergeCancel,
+      border.borderTop,
+      border.borderBottom,
+      border.borderLeft,
+      border.borderRight,
+      border.borderNone,
+      border.borderAll,
+      border.borderOutside,
+      border.borderInside,
+      border.borderHorizontal,
+      border.borderVertical,
+      border.borderSlash,
+      customColor,
+      customStyle,
+      textWrap.clip,
+      textWrap.overflow,
+      textWrap.wrap,
+      rotation.none,
+      rotation.angleup,
+      rotation.angledown,
+      rotation.vertical,
+      rotation.rotationUp,
+      rotation.rotationDown,
+      sort.asc,
+      sort.desc,
+      filter.filter,
+      filter.clearFilter,
+      firstSelection?.column_select,
+      showAlert,
     ]
   );
 

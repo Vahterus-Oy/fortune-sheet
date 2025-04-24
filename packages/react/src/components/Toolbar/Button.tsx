@@ -29,7 +29,11 @@ const Button: React.FC<Props> = ({
       aria-label={tooltip}
       style={selected ? { backgroundColor: "#E7E5EB" } : {}}
     >
-      <SVGIcon name={iconId} style={disabled ? { opacity: 0.3 } : {}} />
+      {iconId ? (
+        <SVGIcon name={iconId} style={disabled ? { opacity: 0.3 } : {}} />
+      ) : (
+        <div />
+      )}
       {tooltip && <div className="fortune-tooltip">{tooltip}</div>}
       {children}
     </div>

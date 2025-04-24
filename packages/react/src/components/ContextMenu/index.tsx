@@ -177,19 +177,15 @@ const ContextMenu: React.FC = () => {
           : ["top", "bottom"].map((dir) => (
               <Menu
                 key={`add-row-${dir}`}
-                onClick={(e, container) => {
+                onClick={() => {
                   const position =
                     context.luckysheet_select_save?.[0]?.row?.[0];
                   if (position == null) return;
-                  const countStr = container.querySelector("input")?.value;
-                  if (countStr == null) return;
-                  const count = parseInt(countStr, 10);
-                  if (count < 1) return;
                   const direction = dir === "top" ? "lefttop" : "rightbottom";
                   const insertRowColOp: SetContextOptions["insertRowColOp"] = {
                     type: "row",
                     index: position,
-                    count,
+                    count: 1,
                     direction,
                     id: context.currentSheetId,
                   };
@@ -221,17 +217,7 @@ const ContextMenu: React.FC = () => {
                           </span>
                         </>
                       )} */}
-                      {`${rightclick.insert}`}
-                      <input
-                        onClick={(e) => e.stopPropagation()}
-                        onKeyDown={(e) => e.stopPropagation()}
-                        tabIndex={0}
-                        type="text"
-                        className="luckysheet-mousedown-cancel insert-row-input"
-                        placeholder={rightclick.number}
-                        defaultValue="1"
-                        disabled
-                      />
+                      {`${rightclick.insert} 1 `}
                       <span className="luckysheet-cols-rows-shift-word luckysheet-mousedown-cancel">
                         row {dir === "top" ? "above" : "below"}
                       </span>

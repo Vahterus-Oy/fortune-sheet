@@ -24,7 +24,7 @@ const Template: StoryFn<typeof Workbook> = ({
   }, []);
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <div style={{ width: "100%", height: "500px" }} />
+      <div style={{ width: "100%", height: "300px" }} />
       <Workbook
         {...args}
         data={data}
@@ -44,8 +44,15 @@ const Template: StoryFn<typeof Workbook> = ({
           "number-decrease",
           "number-increase",
           "|",
+          "hide-row",
+          "|",
           "locked",
           "locked-open",
+          "|",
+          "insert-row",
+          "|",
+          "reset-datasheet",
+          "help",
         ]}
       />
     </div>

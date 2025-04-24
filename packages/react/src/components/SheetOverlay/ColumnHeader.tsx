@@ -276,7 +276,7 @@ const ColumnHeader: React.FC = () => {
           key={i}
           style={_.assign(
             {
-              left: col_pre,
+              left: col_pre - 1,
               width: col - col_pre - 1,
               display: "block",
               backgroundColor: "rgba(76, 76, 76, 0.1)",

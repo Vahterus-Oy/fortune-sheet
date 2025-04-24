@@ -104,9 +104,9 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         width="18"
         height="18"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8" />
       </symbol>
@@ -700,9 +700,9 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         width="18"
         height="18"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <line x1="19" x2="10" y1="4" y2="4" />
         <line x1="14" x2="5" y1="20" y2="20" />
@@ -715,9 +715,9 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         id="eye"
       >
         <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
@@ -730,9 +730,9 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         id="eye-off"
       >
         <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
@@ -747,9 +747,9 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         id="locked"
       >
         <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
@@ -762,9 +762,9 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         id="locked-open"
       >
         <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
@@ -777,10 +777,10 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        id="add-row-above"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        id="insert-row-top"
       >
         <rect width="18" height="8" x="3" y="13" rx="1" />
         <path d="M12 3v6M15 6H9" />
@@ -792,10 +792,10 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        id="add-row-below"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        id="insert-row-bottom"
       >
         <rect
           width="18"
@@ -806,6 +806,40 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         />
         <path d="M12 21v-6M9 18h6/" />
       </symbol>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        id="unhide-row"
+      >
+        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        id="hide-row"
+      >
+        <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
+        <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
+        <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
+        <path d="m2 2 20 20" />
+      </svg>
+
       <symbol viewBox="0 0 24 24" fill="none" id="merge-cancel">
         <path d="M13 14.9998L16.5 11.9996L13 8.99982V14.9998Z" fill="#525C6F" />
         <path
@@ -990,9 +1024,9 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <path d="M12 18h9M15 15l-3 3 3 3M3 11h.01" />
         <rect width="5" height="8" x="7" y="3" rx="2.5" />
@@ -1004,9 +1038,9 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         id="number-increase"
       >
         <path d="M21 18h-9M18 21l3-3-3-3M3 11h.01" />

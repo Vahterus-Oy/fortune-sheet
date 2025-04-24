@@ -10913,6 +10913,12 @@ export default {
   ],
   toolbar: {
     toolbar: "Toolbar",
+    "hide-row": "Hide row",
+    "unhide-row": "Unhide row",
+    locked: "Lock",
+    "locked-open": "Unlock",
+    "insert-row-top": "Insert 1 row above",
+    "insert-row-bottom": "Insert 1 row below",
     undo: "Undo",
     redo: "Redo",
     "clear-format": "Clear Format",
