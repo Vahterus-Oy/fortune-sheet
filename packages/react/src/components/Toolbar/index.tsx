@@ -61,7 +61,8 @@ import { useAlert } from "../../hooks/useAlert";
 const Toolbar: React.FC<{
   setMoreItems: React.Dispatch<React.SetStateAction<React.ReactNode>>;
   moreItemsOpen: boolean;
-}> = ({ setMoreItems, moreItemsOpen }) => {
+  resetDatasheet?: () => void;
+}> = ({ setMoreItems, moreItemsOpen, resetDatasheet }) => {
   const { context, setContext, refs, settings, handleUndo, handleRedo } =
     useContext(WorkbookContext);
   const contextRef = useRef(context);
@@ -1497,10 +1498,15 @@ const Toolbar: React.FC<{
         );
       }
 
-      // TODO: Do the on click method for reset-datasheet
       if (name === "reset-datasheet") {
+        // const resetDatasheet = () => {};
         return (
-          <Button iconId="" tooltip={tooltip} key={name}>
+          <Button
+            iconId=""
+            tooltip={tooltip}
+            key={name}
+            onClick={resetDatasheet}
+          >
             <span className="fortune-toolbar-help">Reset data sheet</span>
           </Button>
         );
@@ -1616,6 +1622,7 @@ const Toolbar: React.FC<{
       filter.clearFilter,
       firstSelection?.column_select,
       showAlert,
+      resetDatasheet,
     ]
   );
 

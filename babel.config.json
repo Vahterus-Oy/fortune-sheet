@@ -7,11 +7,17 @@
           "chrome": 100,
           "safari": 15,
           "firefox": 91
-        }
+        },
+        "loose": true
       }
     ],
     "@babel/preset-flow",
     "@babel/preset-typescript",
     "@babel/preset-react"
+  ],
+  "plugins": [
+    ["@babel/plugin-transform-class-properties", { "loose": true }],
+    ["@babel/plugin-transform-private-methods", { "loose": true }],
+    ["@babel/plugin-transform-private-property-in-object", { "loose": true }]
   ]
 }

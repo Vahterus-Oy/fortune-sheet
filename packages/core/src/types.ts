@@ -122,6 +122,7 @@ export type Image = {
 
 export type Sheet = {
   name: string;
+  isResetDatasheet?: boolean;
   config?: SheetConfig;
   order?: number;
   color?: string;

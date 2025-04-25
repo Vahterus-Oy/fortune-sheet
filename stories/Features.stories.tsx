@@ -22,12 +22,16 @@ const Template: StoryFn<typeof Workbook> = ({
   const onChange = useCallback((d: Sheet[]) => {
     setData(d);
   }, []);
+  const resetSheet = () => {
+    setData([cell]);
+  };
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <div style={{ width: "100%", height: "300px" }} />
       <Workbook
         {...args}
         data={data}
+        resetDatasheet={resetSheet}
         onChange={onChange}
         cellContextMenu={[
           "locked",
