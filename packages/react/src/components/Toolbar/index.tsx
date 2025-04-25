@@ -37,7 +37,7 @@ import {
   insertRowCol,
   hideSelected,
   showSelected,
-} from "@fortune-sheet/core";
+} from "@vahterus/fortune-sheet-core";
 import _ from "lodash";
 import WorkbookContext, { SetContextOptions } from "../../context";
 import "./index.css";

@@ -10,7 +10,7 @@ import {
   handleRowFreezeHandleMouseDown,
   getSheetIndex,
   fixPositionOnFrozenCells,
-} from "@fortune-sheet/core";
+} from "@vahterus/fortune-sheet-core";
 import _ from "lodash";
 import React, {
   useContext,

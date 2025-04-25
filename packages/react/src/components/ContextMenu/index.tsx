@@ -20,7 +20,7 @@ import {
   handleUnlockedCell,
   handleNumberDecrease,
   handleNumberIncrease,
-} from "@fortune-sheet/core";
+} from "@vahterus/fortune-sheet-core";
 import _ from "lodash";
 import React, { useContext, useRef, useCallback, useLayoutEffect } from "react";
 import regeneratorRuntime from "regenerator-runtime";

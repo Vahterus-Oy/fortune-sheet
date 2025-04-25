@@ -1,5 +1,8 @@
 import _ from "lodash";
-import { onImageMoveStart, onImageResizeStart } from "@fortune-sheet/core";
+import {
+  onImageMoveStart,
+  onImageResizeStart,
+} from "@vahterus/fortune-sheet-core";
 import React, { useContext, useMemo } from "react";
 import WorkbookContext from "../../context";
 

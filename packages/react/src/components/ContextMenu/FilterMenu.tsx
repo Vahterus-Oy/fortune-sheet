@@ -9,7 +9,7 @@ import {
   FilterDate,
   FilterColor,
   Context,
-} from "@fortune-sheet/core";
+} from "@vahterus/fortune-sheet-core";
 import React, {
   useCallback,
   useContext,

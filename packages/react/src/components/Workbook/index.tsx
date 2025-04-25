@@ -21,7 +21,7 @@ import {
   calcSelectionInfo,
   groupValuesRefresh,
   setFormulaCellInfoMap,
-} from "@fortune-sheet/core";
+} from "@vahterus/fortune-sheet-core";
 import React, {
   useMemo,
   useState,
