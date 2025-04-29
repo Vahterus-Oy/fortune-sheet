@@ -23,7 +23,6 @@ import React, {
   useMemo,
 } from "react";
 import WorkbookContext from "../../context";
-import SVGIcon from "../SVGIcon";
 
 const ColumnHeader: React.FC = () => {
   const { context, setContext, settings, refs } = useContext(WorkbookContext);
@@ -252,7 +251,7 @@ const ColumnHeader: React.FC = () => {
             )
           )}
         >
-          {allowEditRef.current && (
+          {/* {allowEditRef.current && (
             <span
               className="header-arrow"
               onClick={(e) => {
@@ -268,7 +267,7 @@ const ColumnHeader: React.FC = () => {
             >
               <SVGIcon name="headDownArrow" width={12} />
             </span>
-          )}
+          )} */}
         </div>
       ) : null}
       {selectedLocation.map(({ col, col_pre, c1, c2 }, i) => (
@@ -277,7 +276,7 @@ const ColumnHeader: React.FC = () => {
           key={i}
           style={_.assign(
             {
-              left: col_pre - 1,
+              left: col_pre,
               width: col - col_pre - 1,
               display: "block",
               backgroundColor: "rgba(76, 76, 76, 0.1)",

@@ -18,7 +18,6 @@ import {
   CellMatrix,
   insertRowCol,
   locale,
-  calcSelectionInfo,
   groupValuesRefresh,
   setFormulaCellInfoMap,
 } from "@vahterus/fortune-sheet-core";
@@ -102,26 +101,26 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
     );
 
     const [context, setContext] = useState(defaultContext(refs));
-    const { formula, info } = locale(context);
+    const { info } = locale(context);
 
     const [moreToolbarItems, setMoreToolbarItems] =
       useState<React.ReactNode>(null);
 
-    const [calInfo, setCalInfo] = useState<{
-      numberC: number;
-      count: number;
-      sum: number;
-      max: number;
-      min: number;
-      average: string;
-    }>({
-      numberC: 0,
-      count: 0,
-      sum: 0,
-      max: 0,
-      min: 0,
-      average: "",
-    });
+    // const [calInfo, setCalInfo] = useState<{
+    //   numberC: number;
+    //   count: number;
+    //   sum: number;
+    //   max: number;
+    //   min: number;
+    //   average: string;
+    // }>({
+    //   numberC: 0,
+    //   count: 0,
+    //   sum: 0,
+    //   max: 0,
+    //   min: 0,
+    //   average: "",
+    // });
 
     const mergedSettings = useMemo(
       () => _.assign(_.cloneDeep(defaultSettings), props) as Required<Settings>,
@@ -131,15 +130,15 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
     );
 
     // 计算选区的信息
-    useEffect(() => {
-      const selection = context.luckysheet_select_save;
-      const { lang } = props;
-      if (selection) {
-        const re = calcSelectionInfo(context, lang);
-        setCalInfo(re);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [context.luckysheet_select_save]);
+    // useEffect(() => {
+    //   const selection = context.luckysheet_select_save;
+    //   const { lang } = props;
+    //   if (selection) {
+    //     const re = calcSelectionInfo(context, lang);
+    //     setCalInfo(re);
+    //   }
+    //   // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [context.luckysheet_select_save]);
 
     const initSheetData = useCallback(
       (
@@ -842,7 +841,7 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
                 className="fortune-popover-backdrop"
               />
             )}
-            <div className="fortune-stat-area">
+            {/* <div className="fortune-stat-area">
               <div className="luckysheet-sheet-selection-calInfo">
                 {!!calInfo.count && (
                   <div style={{ width: "60px" }}>
@@ -870,7 +869,7 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
         </ModalProvider>
       </WorkbookContext.Provider>

@@ -28,7 +28,6 @@ import {
   Context,
   GlobalCache,
   onCellsMoveStart,
-  insertRowCol,
   getSheetIndex,
   fixRowStyleOverflowInFreeze,
   fixColumnStyleOverflowInFreeze,
@@ -36,7 +35,7 @@ import {
   api,
 } from "@vahterus/fortune-sheet-core";
 import _ from "lodash";
-import WorkbookContext, { SetContextOptions } from "../../context";
+import WorkbookContext from "../../context";
 import ColumnHeader from "./ColumnHeader";
 import RowHeader from "./RowHeader";
 import InputBox from "./InputBox";
@@ -54,10 +53,10 @@ import DropDownList from "../DataVerification/DropdownList";
 
 const SheetOverlay: React.FC = () => {
   const { context, setContext, settings, refs } = useContext(WorkbookContext);
-  const { info, rightclick } = locale(context);
+  const { info } = locale(context);
   const { showDialog } = useDialog();
   const containerRef = useRef<HTMLDivElement>(null);
-  const bottomAddRowInputRef = useRef<HTMLInputElement>(null);
+  // const bottomAddRowInputRef = useRef<HTMLInputElement>(null);
   const dataVerificationHintBoxRef = useRef<HTMLDivElement>(null);
   const [lastRangeText, setLastRangeText] = useState("");
   const [lastCellValue, setLastCellValue] = useState("");
@@ -294,37 +293,37 @@ const SheetOverlay: React.FC = () => {
     handleOverlayTouchEnd(refs.globalCache);
   }, [refs.globalCache]);
 
-  const handleBottomAddRow = useCallback(() => {
-    const valueStr =
-      bottomAddRowInputRef.current?.value || context.addDefaultRows.toString();
-    const value = parseInt(valueStr, 10);
-    if (Number.isNaN(value)) {
-      return;
-    }
-    if (value < 1) {
-      return;
-    }
-    const insertRowColOp: SetContextOptions["insertRowColOp"] = {
-      type: "row",
-      index:
-        context.luckysheetfile[
-          getSheetIndex(context, context!.currentSheetId! as string) as number
-        ].data!.length - 1,
-      count: value,
-      direction: "rightbottom",
-      id: context.currentSheetId,
-    };
-    setContext(
-      (draftCtx) => {
-        try {
-          insertRowCol(draftCtx, insertRowColOp, false);
-        } catch (err: any) {
-          if (err.message === "maxExceeded") showAlert(rightclick.rowOverLimit);
-        }
-      },
-      { insertRowColOp }
-    );
-  }, [context, rightclick.rowOverLimit, setContext, showAlert]);
+  // const handleBottomAddRow = useCallback(() => {
+  //   const valueStr =
+  //     bottomAddRowInputRef.current?.value || context.addDefaultRows.toString();
+  //   const value = parseInt(valueStr, 10);
+  //   if (Number.isNaN(value)) {
+  //     return;
+  //   }
+  //   if (value < 1) {
+  //     return;
+  //   }
+  //   const insertRowColOp: SetContextOptions["insertRowColOp"] = {
+  //     type: "row",
+  //     index:
+  //       context.luckysheetfile[
+  //         getSheetIndex(context, context!.currentSheetId! as string) as number
+  //       ].data!.length - 1,
+  //     count: value,
+  //     direction: "rightbottom",
+  //     id: context.currentSheetId,
+  //   };
+  //   setContext(
+  //     (draftCtx) => {
+  //       try {
+  //         insertRowCol(draftCtx, insertRowColOp, false);
+  //       } catch (err: any) {
+  //         if (err.message === "maxExceeded") showAlert(rightclick.rowOverLimit);
+  //       }
+  //     },
+  //     { insertRowColOp }
+  //   );
+  // }, [context, rightclick.rowOverLimit, setContext, showAlert]);
 
   useEffect(() => {
     setContext((draftCtx) => {
@@ -494,8 +493,8 @@ const SheetOverlay: React.FC = () => {
           onClick={onLeftTopClick}
           tabIndex={0}
           style={{
-            width: context.rowHeaderWidth - 4,
-            height: Math.max(context.columnHeaderHeight, 27) - 4,
+            width: context.rowHeaderWidth - 2,
+            height: Math.max(context.columnHeaderHeight, 27) - 2,
           }}
         />
         <ColumnHeader />
@@ -847,7 +846,7 @@ const SheetOverlay: React.FC = () => {
                     width: context.ch_width,
                   }}
                 />
-                <div
+                {/* <div
                   id="luckysheet-bottom-controll-row"
                   className="luckysheet-bottom-controll-row"
                   onMouseDown={(e) => e.stopPropagation()}
@@ -897,7 +896,7 @@ const SheetOverlay: React.FC = () => {
                   >
                     {info.backTop}
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -40,37 +40,40 @@ const Template: StoryFn<typeof Workbook> = ({
       <div style={{ width: "60px", height: "300px" }} />
       <div style={{ width: "100%", height: "100vh" }}>
         <div style={{ width: "60px", height: "500px" }} />
-        <Workbook
-          {...args}
-          data={data}
-          resetDatasheet={resetSheet}
-          onChange={onChange}
-          cellContextMenu={[
-            "locked",
-            "locked-open",
-            "|",
-            "number-decrease",
-            "number-increase",
-          ]}
-          headerContextMenu={["hide-row", "|", "insert-row", "delete-row"]}
-          toolbarItems={[
-            "bold",
-            "italic",
-            "|",
-            "number-decrease",
-            "number-increase",
-            "|",
-            "hide-row",
-            "|",
-            "locked",
-            "locked-open",
-            "|",
-            "insert-row",
-            "|",
-            "reset-datasheet",
-            "help",
-          ]}
-        />
+        <div style={{ width: "100%", height: "100vh", display: "flex" }}>
+          <Workbook
+            {...args}
+            data={data}
+            resetDatasheet={resetSheet}
+            onChange={onChange}
+            cellContextMenu={[
+              "locked",
+              "locked-open",
+              "|",
+              "number-decrease",
+              "number-increase",
+            ]}
+            headerContextMenu={["hide-row", "|", "insert-row", "delete-row"]}
+            toolbarItems={[
+              "bold",
+              "italic",
+              "|",
+              "number-decrease",
+              "number-increase",
+              "|",
+              "hide-row",
+              "|",
+              "locked",
+              "locked-open",
+              "|",
+              "insert-row",
+              "|",
+              "reset-datasheet",
+              "help",
+            ]}
+          />
+          <div style={{ width: "150px", height: "500px" }} />
+        </div>
       </div>
     </div>
   );
