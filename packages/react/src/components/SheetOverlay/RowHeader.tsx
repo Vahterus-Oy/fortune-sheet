@@ -161,6 +161,7 @@ const RowHeader: React.FC = () => {
           refs.cellArea.current!,
           "rowHeader"
         );
+        draftCtx.contextMenu.headerMenu = true;
       });
     },
     [refs.workbookContainer, setContext, settings, refs.cellArea]

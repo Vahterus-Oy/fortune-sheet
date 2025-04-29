@@ -410,7 +410,7 @@ export function mergeBorder(
   col_index: number
 ) {
   if (!d || !d[row_index]) {
-    console.warn("Merge info is null", row_index, col_index);
+    // console.warn("Merge info is null", row_index, col_index);
     return null;
   }
   const value = d[row_index][col_index];
@@ -419,14 +419,14 @@ export function mergeBorder(
   if (value?.mc) {
     const margeMaindata = value.mc;
     if (!margeMaindata) {
-      console.warn("Merge info is null", row_index, col_index);
+      // console.warn("Merge info is null", row_index, col_index);
       return null;
     }
     col_index = margeMaindata.c;
     row_index = margeMaindata.r;
 
     if (_.isNil(d?.[row_index]?.[col_index])) {
-      console.warn("Main merge Cell info is null", row_index, col_index);
+      // console.warn("Main merge Cell info is null", row_index, col_index);
       return null;
     }
     const col_rs = d[row_index]?.[col_index]?.mc?.cs;
@@ -440,7 +440,7 @@ export function mergeBorder(
       _.isNil(col_rs) ||
       _.isNil(row_rs)
     ) {
-      console.warn("Main merge info is null", mergeMain);
+      // console.warn("Main merge info is null", mergeMain);
       return null;
     }
 

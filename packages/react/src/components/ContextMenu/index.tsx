@@ -1030,8 +1030,8 @@ const ContextMenu: React.FC = () => {
       style={{ left: contextMenu.x, top: contextMenu.y }}
     >
       {context.contextMenu.headerMenu
-        ? settings.headerContextMenu.map((menu, i) => getMenuElement(menu, i))
-        : settings.cellContextMenu.map((menu, i) => getMenuElement(menu, i))}
+        ? settings.headerContextMenu?.map((menu, i) => getMenuElement(menu, i))
+        : settings.cellContextMenu?.map((menu, i) => getMenuElement(menu, i))}
     </div>
   );
 };

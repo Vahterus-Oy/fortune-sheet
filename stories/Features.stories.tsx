@@ -26,39 +26,52 @@ const Template: StoryFn<typeof Workbook> = ({
     setData([cell]);
   };
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
-      <div style={{ width: "100%", height: "300px" }} />
-      <Workbook
-        {...args}
-        data={data}
-        resetDatasheet={resetSheet}
-        onChange={onChange}
-        cellContextMenu={[
-          "locked",
-          "locked-open",
-          "|",
-          "number-decrease",
-          "number-increase",
-        ]}
-        headerContextMenu={["hide-row", "|", "insert-row", "delete-row"]}
-        toolbarItems={[
-          "bold",
-          "italic",
-          "|",
-          "number-decrease",
-          "number-increase",
-          "|",
-          "hide-row",
-          "|",
-          "locked",
-          "locked-open",
-          "|",
-          "insert-row",
-          "|",
-          "reset-datasheet",
-          "help",
-        ]}
-      />
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        display: "grid",
+        gridTemplateColumns: "60px 1fr",
+        alignItems: "start",
+        gap: "16px", // optional, for spacing
+        padding: "16px", // optional, for nicer layout
+      }}
+    >
+      <div style={{ width: "60px", height: "300px" }} />
+      <div style={{ width: "100%", height: "100vh" }}>
+        <div style={{ width: "60px", height: "500px" }} />
+        <Workbook
+          {...args}
+          data={data}
+          resetDatasheet={resetSheet}
+          onChange={onChange}
+          cellContextMenu={[
+            "locked",
+            "locked-open",
+            "|",
+            "number-decrease",
+            "number-increase",
+          ]}
+          headerContextMenu={["hide-row", "|", "insert-row", "delete-row"]}
+          toolbarItems={[
+            "bold",
+            "italic",
+            "|",
+            "number-decrease",
+            "number-increase",
+            "|",
+            "hide-row",
+            "|",
+            "locked",
+            "locked-open",
+            "|",
+            "insert-row",
+            "|",
+            "reset-datasheet",
+            "help",
+          ]}
+        />
+      </div>
     </div>
   );
 };

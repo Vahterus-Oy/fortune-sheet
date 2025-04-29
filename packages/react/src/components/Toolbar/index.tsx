@@ -1487,7 +1487,7 @@ const Toolbar: React.FC<{
         return (
           <Button iconId="" tooltip={tooltip} key={name}>
             <a
-              href="https://docs.vahterus.cloud/doc/data-sheet-quick-reference-KApok1NZHL"
+              href="https://docs.vahterus.cloud/doc/data-sheets-wTwlEDXQrQ"
               target="_blank"
               rel="noopener noreferrer"
               className="fortune-toolbar-help"
@@ -1499,7 +1499,6 @@ const Toolbar: React.FC<{
       }
 
       if (name === "reset-datasheet") {
-        // const resetDatasheet = () => {};
         return (
           <Button
             iconId=""

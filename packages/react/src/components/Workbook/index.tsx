@@ -760,6 +760,23 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
             className="fortune-container"
             ref={workbookContainer}
             onKeyDown={onKeyDown}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const workbookRect =
+                refs.workbookContainer.current?.getBoundingClientRect();
+              const x = e.clientX - (workbookRect?.left ?? 0);
+              const y = e.clientY - (workbookRect?.top ?? 0);
+
+              setContext((prevCtx) => ({
+                ...prevCtx,
+                contextMenu: {
+                  x,
+                  y,
+                  headerMenu: prevCtx.contextMenu?.headerMenu,
+                },
+              }));
+            }}
           >
             <section
               aria-labelledby="shortcuts-heading"

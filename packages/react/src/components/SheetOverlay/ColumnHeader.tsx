@@ -170,6 +170,7 @@ const ColumnHeader: React.FC = () => {
           refs.cellArea.current!,
           "columnHeader"
         );
+        draftCtx.contextMenu.headerMenu = true;
       });
     },
     [refs.workbookContainer, setContext, settings, refs.cellArea]
