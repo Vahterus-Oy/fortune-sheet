@@ -84,7 +84,7 @@
 
 #fortune-search-replace #searchAllbox {
   height: 210px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #E6E6E6;
   margin-top: 10px;
   overflow-y: auto;
   position: relative;
@@ -96,7 +96,7 @@
   line-height: 29px;
   padding: 0 5px;
   background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #E6E6E6;
   box-sizing: border-box;
   position: sticky;
   left: 0;
@@ -123,7 +123,7 @@
 #fortune-search-replace #searchAllbox .boxMain .boxItem {
   height: 30px;
   line-height: 29px;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #E6E6E6;
   padding: 0 5px;
   box-sizing: border-box;
 }

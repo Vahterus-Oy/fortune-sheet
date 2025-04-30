@@ -217,7 +217,7 @@ export class Canvas {
 
       // if (this.sheetCtx.config?.rowhidden?.[r] == null) {
       renderCtx.fillStyle =
-        this.sheetCtx.config?.rowhidden?.[r] != null ? "#F0F2F5" : "#ffffff";
+        this.sheetCtx.config?.rowhidden?.[r] != null ? "#F0F2F5" : "#FAFAFC";
       renderCtx.fillRect(
         0,
         start_r + offsetTop + firstOffset,
@@ -399,7 +399,7 @@ export class Canvas {
       }
 
       if (this.sheetCtx.config?.colhidden?.[c] == null) {
-        renderCtx.fillStyle = "#ffffff";
+        renderCtx.fillStyle = "#FAFAFC";
         renderCtx.fillRect(
           start_c + offsetLeft - 1,
           0,

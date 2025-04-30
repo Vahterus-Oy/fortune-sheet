@@ -26,7 +26,7 @@
 #fortune-data-verification .box .box-item .data-verification-range {
   width: 100%;
   height: 30px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #E6E6E6;
 }
 
 #fortune-data-verification .box .box-item .show-box-item {
@@ -43,14 +43,14 @@
 #fortune-data-verification .box .box-item .show-box-item .check-box input {
   height: 30px;
   padding: 0 10px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #E6E6E6;
   box-sizing: border-box;
 }
 
 #fortune-data-verification .input-box input {
   height: 30px;
   padding: 4px 10px 4px 10px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #E6E6E6;
   box-sizing: border-box;
   margin-top: 6px;
 }
@@ -79,7 +79,7 @@
 #fortune-data-verification .box .box-item .data-verification-type-select {
   width: 100%;
   height: 30px;
-  border-color: #d4d4d4;
+  border-color: #E6E6E6;
   outline-style: none;
 }
 
@@ -152,7 +152,7 @@
 #range-dialog input {
   height: 30px;
   padding: 0 10px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #E6E6E6;
   outline-style: none;
   user-select: none;
 }

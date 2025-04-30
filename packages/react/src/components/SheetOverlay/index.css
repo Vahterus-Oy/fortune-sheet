@@ -3,6 +3,7 @@
   width: 100%;
   height: 100%;
   outline-style: none;
+  border-right: 1px solid #e6e6e6;
 }
 
 .fortune-cell-area {
@@ -29,6 +30,7 @@
   padding-top: 2px;
   cursor: default;
   width: 45px;
+  border-left: 1px solid #e6e6e6;
 }
 
 .fortune-row-header-hover {
@@ -105,13 +107,13 @@
 .fortune-left-top {
   width: 44.5px;
   height: 25px;
-  border: solid 0 #E6E6E6;
+  border: solid 0 #e6e6e6;
   position: relative;
   padding-top: 0;
   border-width: 1px 2px 2px 2px;
   padding-left: 0;
   cursor: pointer;
-  background-color: white;
+  background-color: #FAFAFC;
 }
 
 .fortune-add-row-button {
@@ -443,7 +445,7 @@
 
 .luckysheet-cell-flow-column-line {
   position: absolute;
-  border-right: 1px solid #d4d4d4;
+  border-right: 1px solid #e6e6e6;
   height: inherit;
 }
 
@@ -460,7 +462,7 @@
 
 .luckysheet-cell-flow-row-line {
   position: absolute;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #e6e6e6;
   width: inherit;
 }
 
