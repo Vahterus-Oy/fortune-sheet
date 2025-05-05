@@ -148,7 +148,7 @@ export function handleGlobalWheel(
         row_ed = visibledatarow_c.length - 1;
       }
     } else {
-      row_ed = row_st - step;
+      row_ed = row_st - 2;
 
       if (row_ed < 0) {
         row_ed = 0;

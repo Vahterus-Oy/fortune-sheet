@@ -174,7 +174,7 @@ export const defaultSettings: Required<Settings> = {
   rowHeaderWidth: 46,
   columnHeaderHeight: 20,
   defaultColWidth: 73,
-  defaultRowHeight: 19,
+  defaultRowHeight: 25,
   defaultFontSize: 10,
   toolbarItems: [
     "undo",
