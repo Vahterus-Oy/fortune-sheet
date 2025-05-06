@@ -508,7 +508,6 @@ export function getFlowdata(ctx?: Context, id?: string | null) {
 function calcRowColSize(ctx: Context, rowCount: number, colCount: number) {
   ctx.visibledatarow = [];
   ctx.rh_height = 0;
-
   for (let r = 0; r < rowCount; r += 1) {
     let rowlen: number | string = ctx.defaultrowlen;
 
@@ -544,7 +543,7 @@ function calcRowColSize(ctx: Context, rowCount: number, colCount: number) {
   ctx.visibledatacolumn = [];
   ctx.ch_width = 0;
 
-  const maxColumnlen = 120;
+  const maxColumnlen = 0;
 
   const flowdata = getFlowdata(ctx);
   for (let c = 0; c < colCount; c += 1) {
