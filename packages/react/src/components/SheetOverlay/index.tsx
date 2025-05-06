@@ -482,9 +482,17 @@ const SheetOverlay: React.FC = () => {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
       tabIndex={-1}
+      // style={{
+      //   width: context.luckysheetTableContentHW[0],
+      //   height: context.luckysheetTableContentHW[1],
+      // }}
       style={{
-        width: context.luckysheetTableContentHW[0],
-        height: context.luckysheetTableContentHW[1],
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "auto",
       }}
     >
       <div className="fortune-col-header-wrap">

@@ -19,6 +19,7 @@ const Template: StoryFn<typeof Workbook> = ({
   ...args
 }) => {
   const [data, setData] = useState<Sheet[]>(data0);
+  const [collapsed, setCollapsed] = useState(false);
   const onChange = useCallback((d: Sheet[]) => {
     setData(d);
   }, []);
@@ -31,15 +32,36 @@ const Template: StoryFn<typeof Workbook> = ({
         width: "100%",
         height: "100vh",
         display: "grid",
-        gridTemplateColumns: "60px 1fr",
+        gridTemplateColumns: collapsed ? "60px 1fr" : "240px 1fr",
         alignItems: "start",
         gap: "16px", // optional, for spacing
         padding: "16px", // optional, for nicer layout
       }}
     >
-      <div style={{ width: "60px", height: "300px" }} />
+      {collapsed ? (
+        <div style={{ width: "60px", height: "300px" }}>
+          <button
+            onClick={() => {
+              setCollapsed(!collapsed);
+            }}
+            type="button"
+          >
+            Click
+          </button>
+        </div>
+      ) : (
+        <div style={{ width: "240px", height: "300px" }}>
+          <button
+            onClick={() => {
+              setCollapsed(!collapsed);
+            }}
+            type="button"
+          >
+            Click
+          </button>
+        </div>
+      )}
       <div style={{ width: "100%", height: "100vh" }}>
-        <div style={{ width: "60px", height: "500px" }} />
         <div style={{ width: "100%", height: "100vh", display: "flex" }}>
           <Workbook
             {...args}

@@ -255,6 +255,42 @@ const Sheet: React.FC<Props> = ({ sheet }) => {
     [refs.globalCache, refs.scrollbarX, refs.scrollbarY, setContext]
   );
 
+  useEffect(() => {
+    if (refs.canvas.current && placeholderRef.current) {
+      // Update canvas size when container size changes
+      const updateCanvasSize = () => {
+        const { width, height } =
+          placeholderRef.current!.getBoundingClientRect();
+        refs.canvas.current!.width = width * context.devicePixelRatio;
+        refs.canvas.current!.height = height * context.devicePixelRatio;
+        refs.canvas.current!.style.width = `${width}px`;
+        refs.canvas.current!.style.height = `${height}px`;
+
+        // Update context dimensions
+        setContext((ctx) => {
+          ctx.luckysheetTableContentHW = [width, height];
+          ctx.cellmainHeight = height - ctx.columnHeaderHeight;
+          ctx.cellmainWidth = width - ctx.rowHeaderWidth;
+        });
+      };
+
+      // Initial size update
+      updateCanvasSize();
+
+      // Create resize observer to handle container size changes
+      const resizeObserver = new ResizeObserver(updateCanvasSize);
+      resizeObserver.observe(placeholderRef.current);
+
+      // Return cleanup function
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+
+    // Return undefined if the condition is not met
+    return undefined;
+  }, [refs.canvas, placeholderRef, context.devicePixelRatio, setContext]);
+
   /**
    * Bind wheel event.
    * Note: cannot use onWheel directly on the container because it behaves strange
