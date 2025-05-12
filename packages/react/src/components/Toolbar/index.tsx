@@ -35,8 +35,8 @@ import {
   clearFilter,
   applyLocation,
   insertRowCol,
-  hideSelected,
-  showSelected,
+  hideSelectedToolbar,
+  showSelectedToolbar,
 } from "@vahterus/fortune-sheet-core";
 import _ from "lodash";
 import WorkbookContext, { SetContextOptions } from "../../context";
@@ -1453,27 +1453,23 @@ const Toolbar: React.FC<{
             ));
       }
 
-      if (name === "hide-row") {
+      if (name === "hide") {
         return ["hideSelected", "showHide"].map((item) => (
           <Button
             iconId={item === "hideSelected" ? "hide-row" : "unhide-row"}
-            tooltip={
-              toolbar[item === "hideSelected" ? "hide-row" : "unhide-row"]
-            }
+            tooltip={toolbar[item === "hideSelected" ? "hide" : "unhide"]}
             key={item === "hideSelected" ? "hide-row" : "unhide-row"}
             onClick={() => {
               setContext((draftCtx) => {
                 let msg = "";
                 if (item === "hideSelected") {
-                  msg = hideSelected(draftCtx, "row");
+                  msg = hideSelectedToolbar(draftCtx, "row");
                 } else if (item === "showHide") {
-                  showSelected(draftCtx, "row");
+                  showSelectedToolbar(draftCtx, "row");
                 }
-                if (msg === "noMulti") {
+                if (msg === "noSelection") {
                   showDialog(
-                    item === "hideSelected"
-                      ? "Hide row failed"
-                      : "Unhide row failed"
+                    item === "hideSelected" ? "Hide failed" : "Unhide failed"
                   );
                 }
                 draftCtx.contextMenu = {};

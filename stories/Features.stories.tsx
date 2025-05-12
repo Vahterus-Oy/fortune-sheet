@@ -19,20 +19,27 @@ const Template: StoryFn<typeof Workbook> = ({
   ...args
 }) => {
   const [data, setData] = useState<Sheet[]>(data0);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const onChange = useCallback((d: Sheet[]) => {
     setData(d);
+    console.log("d", d[0].config?.rowhidden);
+    // console.log("hidden cell", d[0].celldata);
   }, []);
   const resetSheet = () => {
     setData([cell]);
   };
+
+  // React.useEffect(() => {
+  //   console.log("d", data[0].config?.rowhidden);
+  //   console.log("hidden cell", data[0].celldata);
+  // }, [data]);
   return (
     <div
       style={{
         width: "100%",
         height: "100vh",
         display: "grid",
-        gridTemplateColumns: collapsed ? "60px 1fr" : "240px 1fr",
+        gridTemplateColumns: collapsed ? "60px auto" : "240px auto",
         alignItems: "start",
         gap: "16px", // optional, for spacing
         padding: "16px", // optional, for nicer layout
@@ -62,39 +69,55 @@ const Template: StoryFn<typeof Workbook> = ({
         </div>
       )}
       <div style={{ width: "100%", height: "100vh" }}>
-        <div style={{ width: "100%", height: "100vh", display: "flex" }}>
-          <Workbook
-            {...args}
-            data={data}
-            resetDatasheet={resetSheet}
-            onChange={onChange}
-            cellContextMenu={[
-              "locked",
-              "locked-open",
-              "|",
-              "number-decrease",
-              "number-increase",
-            ]}
-            headerContextMenu={["hide-row", "|", "insert-row", "delete-row"]}
-            toolbarItems={[
-              "bold",
-              "italic",
-              "|",
-              "number-decrease",
-              "number-increase",
-              "|",
-              "hide-row",
-              "|",
-              "locked",
-              "locked-open",
-              "|",
-              "insert-row",
-              "|",
-              "reset-datasheet",
-              "help",
-            ]}
-          />
-          <div style={{ width: "150px", height: "500px" }} />
+        <div
+          style={{
+            width: "100%",
+            height: "100vh",
+            display: "grid",
+            gridTemplateColumns: "1fr 200px",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              height: "100vh",
+            }}
+          >
+            <Workbook
+              {...args}
+              data={data}
+              resetDatasheet={resetSheet}
+              onChange={onChange}
+              cellContextMenu={[
+                "locked",
+                "locked-open",
+                "hide-cell",
+                "unhide-cell",
+                "|",
+                "number-decrease",
+                "number-increase",
+              ]}
+              headerContextMenu={["hide-row", "|", "insert-row", "delete-row"]}
+              toolbarItems={[
+                "bold",
+                "italic",
+                "|",
+                "number-decrease",
+                "number-increase",
+                "|",
+                "hide",
+                "|",
+                "locked",
+                "locked-open",
+                "|",
+                "insert-row",
+                "|",
+                "reset-datasheet",
+                "help",
+              ]}
+            />
+          </div>
+          <div style={{ width: "200px" }} />
         </div>
       </div>
     </div>

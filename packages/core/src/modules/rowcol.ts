@@ -4,6 +4,7 @@ import { Sheet } from "../types";
 import { getSheetIndex } from "../utils";
 import { getcellFormula } from "./cell";
 import { functionStrChange } from "./formula";
+import { updateRowHiddenStatus } from "./toolbar";
 
 const refreshLocalMergeData = (merge_new: Record<string, any>, file: Sheet) => {
   Object.entries(merge_new).forEach(([, v]) => {
@@ -2135,11 +2136,193 @@ export function computeRowlenArr(ctx: Context, rowHeight: number, cfg: any) {
   return rowlenArr;
 }
 
+// In packages/core/src/modules/rowcol.ts
+
+export function hideSelectedToolbar(ctx: Context, type: string) {
+  if (!ctx.luckysheet_select_save) return "noSelection";
+
+  const selection = ctx.luckysheet_select_save[0];
+  const index = getSheetIndex(ctx, ctx.currentSheetId) as number;
+
+  if (index === null || !ctx.luckysheetfile[index]?.data) {
+    return "noData";
+  }
+
+  const sheetData = ctx.luckysheetfile[index].data;
+  if (!sheetData || sheetData.length === 0) {
+    return "noData";
+  }
+
+  // Hide row
+  if (type === "row") {
+    const rowhidden = ctx.config.rowhidden ?? {};
+
+    // Check if it's a row selection (spans multiple columns)
+    const isRowSelection =
+      !selection.column_select &&
+      selection.column[0] === 0 &&
+      selection.column[1] === ctx.luckysheetfile[index].data![0].length - 1;
+
+    if (isRowSelection) {
+      // Handle row selection - hide the entire row and all its cells
+      const r1 = selection.row[0];
+      const r2 = selection.row[1];
+      for (let r = r1; r <= r2; r += 1) {
+        rowhidden[r] = 0;
+        // Hide all cells in this row
+        for (let c = 0; c < sheetData[0].length; c += 1) {
+          const cell = sheetData[r]?.[c];
+          if (cell) {
+            cell.hide = true;
+          }
+        }
+      }
+    } else {
+      // Handle cell selection - check if all cells in row are hidden
+      const r1 = selection.row[0];
+      const r2 = selection.row[1];
+      for (let r = r1; r <= r2; r += 1) {
+        for (let c = selection.column[0]; c <= selection.column[1]; c += 1) {
+          const cell = sheetData[r]?.[c];
+          if (cell) {
+            cell.hide = true;
+          }
+        }
+        // Update row hidden status
+        updateRowHiddenStatus(ctx, r);
+      }
+    }
+
+    ctx.config.rowhidden = rowhidden;
+  } else if (type === "column") {
+    // 隐藏列
+    const colhidden = ctx.config.colhidden ?? {};
+    const c1 = ctx.luckysheet_select_save[0].column[0];
+    const c2 = ctx.luckysheet_select_save[0].column[1];
+    const colhiddenNumber = c2;
+    for (let c = c1; c <= c2; c += 1) {
+      colhidden[c] = 0;
+    }
+    ctx.config.colhidden = colhidden;
+    const columnLen = ctx.luckysheetfile[index].data![0].length;
+    // 计算要隐藏的列是否是最后一列
+    const isEndColumn =
+      columnLen - 1 === colhiddenNumber ||
+      Object.keys(colhidden).findIndex(
+        (o) => parseInt(o, 10) - 1 === colhiddenNumber
+      ) >= 0;
+    if (isEndColumn) {
+      ctx.luckysheet_select_save[0].column[0] -= 1;
+      ctx.luckysheet_select_save[0].column[1] -= 1;
+    } else {
+      ctx.luckysheet_select_save[0].column[0] += 1;
+      ctx.luckysheet_select_save[0].column[1] += 1;
+    }
+  }
+
+  ctx.luckysheetfile[index].config = ctx.config;
+  return "";
+}
+
+// In packages/core/src/modules/rowcol.ts
+
+export function showSelectedToolbar(ctx: Context, type: string) {
+  if (!ctx.luckysheet_select_save) return "noSelection";
+
+  const selection = ctx.luckysheet_select_save[0];
+  const index = getSheetIndex(ctx, ctx.currentSheetId) as number;
+
+  // Check if we have valid sheet data
+  if (index === null || !ctx.luckysheetfile[index]?.data) {
+    return "noData";
+  }
+
+  const sheetData = ctx.luckysheetfile[index].data;
+  if (!sheetData || sheetData.length === 0) {
+    return "noData";
+  }
+
+  // Unhide row
+  if (type === "row") {
+    const rowhidden = ctx.config.rowhidden ?? {};
+
+    // Check if it's a row selection (spans multiple columns)
+    const isRowSelection =
+      !selection.column_select &&
+      selection.column[0] === 0 &&
+      selection.column[1] === ctx.luckysheetfile[index].data![0].length - 1;
+
+    if (isRowSelection) {
+      // Handle row selection - unhide the entire row
+      const r1 = selection.row[0];
+      const r2 = selection.row[1];
+      ctx.config.rowhidden = rowhidden;
+      for (let r = r1; r <= r2; r += 1) {
+        delete rowhidden[r];
+        // Unhide all cells in this row
+        for (let c = 0; c < sheetData[0].length; c += 1) {
+          const cell = sheetData[r]?.[c];
+          if (cell) {
+            cell.hide = false;
+          }
+        }
+      }
+    } else {
+      // Handle cell selection - unhide selected cells and check row status
+      const r1 = selection.row[0];
+      const r2 = selection.row[1];
+      for (let r = r1; r <= r2; r += 1) {
+        // Unhide selected cells
+        for (let c = selection.column[0]; c <= selection.column[1]; c += 1) {
+          const cell = sheetData[r]?.[c];
+          if (cell) {
+            cell.hide = false;
+          }
+        }
+
+        // Check if any cells in the row are now visible
+        let anyCellVisible = false;
+        for (let c = 0; c < sheetData[0].length; c += 1) {
+          const cell = sheetData[r]?.[c];
+          if (cell && !cell.hide) {
+            anyCellVisible = true;
+            break;
+          }
+        }
+        // If any cell is visible, unhide the row
+        if (anyCellVisible) {
+          delete rowhidden[r];
+        }
+      }
+    }
+
+    ctx.config.rowhidden = rowhidden;
+  } else if (type === "column") {
+    // 取消隐藏列
+    const colhidden = ctx.config.colhidden ?? {};
+    const c1 = ctx.luckysheet_select_save[0].column[0];
+    const c2 = ctx.luckysheet_select_save[0].column[1];
+    for (let c = c1; c <= c2; c += 1) {
+      delete colhidden[c];
+    }
+    ctx.config.colhidden = colhidden;
+  }
+
+  ctx.luckysheetfile[index].config = ctx.config;
+  return "";
+}
+
 // 隐藏选中行列
 export function hideSelected(ctx: Context, type: string) {
   if (!ctx.luckysheet_select_save || ctx.luckysheet_select_save.length > 1)
     return "noMulti";
+
   const index = getSheetIndex(ctx, ctx.currentSheetId) as number;
+  if (index === null || !ctx.luckysheetfile[index]?.data) return "noData";
+
+  const sheetData = ctx.luckysheetfile[index].data;
+  if (!sheetData || sheetData.length === 0) return "noData";
+
   // 隐藏行
   if (type === "row") {
     /* TODO: 工作表保护判断
@@ -2153,7 +2336,15 @@ export function hideSelected(ctx: Context, type: string) {
     const r2 = ctx.luckysheet_select_save[0].row[1];
     const rowhiddenNumber = r2;
     for (let r = r1; r <= r2; r += 1) {
-      rowhidden[r] = 0;
+      // Hide all cells in this row
+      for (let c = 0; c < sheetData[0].length; c += 1) {
+        const cell = sheetData[r]?.[c];
+        if (cell) {
+          cell.hide = true;
+        }
+      }
+      // Update row hidden status
+      updateRowHiddenStatus(ctx, r);
     }
     /* 保存撤销,luck中保存撤销用以下方式实现，而在本项目中不需要另外处理
       if(Store.clearjfundo){
@@ -2219,6 +2410,11 @@ export function showSelected(ctx: Context, type: string) {
   if (!ctx.luckysheet_select_save || ctx.luckysheet_select_save.length > 1)
     return "noMulti";
   const index = getSheetIndex(ctx, ctx.currentSheetId) as number;
+  if (index === null || !ctx.luckysheetfile[index]?.data) return "noData";
+
+  const sheetData = ctx.luckysheetfile[index].data;
+  if (!sheetData || sheetData.length === 0) return "noData";
+
   // 取消隐藏行
   if (type === "row") {
     const rowhidden = ctx.config.rowhidden ?? {};
@@ -2226,6 +2422,13 @@ export function showSelected(ctx: Context, type: string) {
     const r2 = ctx.luckysheet_select_save[0].row[1];
     for (let r = r1; r <= r2; r += 1) {
       delete rowhidden[r];
+      // Unhide all cells in this row
+      for (let c = 0; c < sheetData[0].length; c += 1) {
+        const cell = sheetData[r]?.[c];
+        if (cell) {
+          cell.hide = false;
+        }
+      }
     }
     ctx.config.rowhidden = rowhidden;
   } else if (type === "column") {

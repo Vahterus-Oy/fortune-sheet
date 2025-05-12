@@ -10915,6 +10915,8 @@ export default {
     italic: "斜体 (Ctrl+I)",
     "hide-row": "Hide row",
     "unhide-row": "Unhide row",
+    hide: "Hide",
+    unhide: "Unhide",
     locked: "Lock",
     unlocked: "Unlock",
     "insert-row-top": "Insert 1 row above",

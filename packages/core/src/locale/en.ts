@@ -10915,6 +10915,8 @@ export default {
     toolbar: "Toolbar",
     "hide-row": "Hide row",
     "unhide-row": "Unhide row",
+    hide: "Hide",
+    unhide: "Unhide",
     locked: "Lock",
     "locked-open": "Unlock",
     "insert-row-top": "Insert 1 row above",

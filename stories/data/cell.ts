@@ -4,11 +4,11 @@ const data = {
   defaultColWidth: 250,
   isResetDatasheet: true,
   config: {
-    rowReadOnly: {
-      2: 1,
-      3: 1,
-      4: 1,
-    },
+    // rowReadOnly: {
+    //   2: 1,
+    //   3: 1,
+    //   4: 1,
+    // },
     merge: {
       "13_5": {
         r: 13,

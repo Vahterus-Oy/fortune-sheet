@@ -173,9 +173,10 @@ export function updateFormatCell(
       return;
     }
     for (let r = row_st; r <= row_ed; r += 1) {
-      if (!_.isNil(ctx.config.rowhidden) && !_.isNil(ctx.config.rowhidden[r])) {
-        continue;
-      }
+      // Comment out becasue allow hidden rows to be updated
+      // if (!_.isNil(ctx.config.rowhidden) && !_.isNil(ctx.config.rowhidden[r])) {
+      //   continue;
+      // }
 
       for (let c = col_st; c <= col_ed; c += 1) {
         const value = d[r][c];
@@ -1160,6 +1161,106 @@ export function handleUnlockedCell(ctx: Context, cellInput: HTMLDivElement) {
   setAttr(ctx, cellInput, "locked", false);
 }
 
+// Helper function to check and update row hiding status
+export function updateRowHiddenStatus(ctx: Context, row: number) {
+  const index = getSheetIndex(ctx, ctx.currentSheetId) as number;
+  if (index === null || !ctx.luckysheetfile[index]?.data) return;
+
+  const sheetData = ctx.luckysheetfile[index].data;
+  if (!sheetData || sheetData.length === 0) return;
+
+  // Check if all cells in the row are hidden
+  let allCellsHidden = true;
+  for (let c = 0; c < sheetData[0].length; c += 1) {
+    const cell = sheetData[row]?.[c];
+    if (cell && !cell.hide) {
+      allCellsHidden = false;
+      break;
+    }
+  }
+
+  // Update row hidden status
+  const rowhidden = ctx.config.rowhidden ?? {};
+  if (allCellsHidden) {
+    rowhidden[row] = 0;
+  } else {
+    delete rowhidden[row];
+  }
+  ctx.config.rowhidden = rowhidden;
+  ctx.luckysheetfile[index].config = ctx.config;
+}
+
+export function handleHideCell(ctx: Context, cellInput: HTMLDivElement) {
+  const index = getSheetIndex(ctx, ctx.currentSheetId) as number;
+  if (index === null || !ctx.luckysheetfile[index]?.data) return;
+
+  const sheetData = ctx.luckysheetfile[index].data;
+  if (!sheetData || sheetData.length === 0) return;
+
+  // Get the current selection
+  if (!ctx.luckysheet_select_save || ctx.luckysheet_select_save.length === 0)
+    return;
+  const selection = ctx.luckysheet_select_save[0];
+
+  // Get the row range from selection
+  const [rowStart, rowEnd] = selection.row;
+
+  // Hide the cells using setAttr (it handles multiple cells)
+  setAttr(ctx, cellInput, "hide", true);
+
+  // Check each row in the selection for row hiding
+  for (let r = rowStart; r <= rowEnd; r += 1) {
+    // Check if all cells in the row are hidden
+    let allCellsHidden = true;
+    for (let c = 0; c < sheetData[0].length; c += 1) {
+      const rowCell = sheetData[r]?.[c];
+      if (rowCell && !rowCell.hide) {
+        allCellsHidden = false;
+        break;
+      }
+    }
+
+    // If all cells are hidden, hide the row
+    if (allCellsHidden) {
+      const rowhidden = ctx.config.rowhidden ?? {};
+      rowhidden[r] = 0;
+      ctx.config.rowhidden = rowhidden;
+    }
+  }
+
+  ctx.luckysheetfile[index].config = ctx.config;
+}
+
+export function handleUnhideCell(ctx: Context, cellInput: HTMLDivElement) {
+  const index = getSheetIndex(ctx, ctx.currentSheetId) as number;
+  if (index === null || !ctx.luckysheetfile[index]?.data) return;
+
+  const sheetData = ctx.luckysheetfile[index].data;
+  if (!sheetData || sheetData.length === 0) return;
+
+  // Get the current selection
+  if (!ctx.luckysheet_select_save || ctx.luckysheet_select_save.length === 0)
+    return;
+  const selection = ctx.luckysheet_select_save[0];
+
+  // Get the row range from selection
+  const [rowStart, rowEnd] = selection.row;
+
+  // First unhide the cells using setAttr
+  setAttr(ctx, cellInput, "hide", false);
+
+  // Then check each row in the selection for row unhiding
+  const rowhidden = ctx.config.rowhidden ?? {};
+  for (let r = rowStart; r <= rowEnd; r += 1) {
+    // Check if any cells in the row are visible
+    if (rowhidden?.[r] === 0) delete rowhidden[r];
+  }
+
+  // Update the config with the modified rowhidden
+  ctx.config.rowhidden = rowhidden;
+  ctx.luckysheetfile[index].config = ctx.config;
+}
+
 export function handleHorizontalAlign(
   ctx: Context,
   cellInput: HTMLDivElement,
@@ -1607,6 +1708,8 @@ const handlerMap: Record<string, ToolbarItemClickHandler> = {
   link: handleLink,
   locked: handleLockedCell,
   "locked-open": handleUnlockedCell,
+  "hide-cell": handleHideCell,
+  "unhide-cell": handleUnhideCell,
 };
 
 const selectedMap: Record<string, ToolbarItemSelectedFunc> = {
@@ -1616,6 +1719,8 @@ const selectedMap: Record<string, ToolbarItemSelectedFunc> = {
   underline: (cell) => cell?.un === 1,
   locked: (cell) => cell?.locked === true,
   "locked-open": (cell) => cell?.locked === false,
+  "hide-cell": (cell) => cell?.hide === true,
+  "unhide-cell": (cell) => cell?.hide === false,
 };
 
 export function toolbarItemClickHandler(name: string) {

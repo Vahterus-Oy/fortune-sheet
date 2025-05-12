@@ -1647,7 +1647,10 @@ export class Canvas {
       endY - startY + borderfix[3] - 5, // Subtract 4px (2px from each side) from height
     ];
 
-    if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+    if (
+      this.sheetCtx.config?.rowhidden?.[r] != null ||
+      flowdata[r]?.[c]?.hide
+    ) {
       renderCtx.fillStyle = "#F0F2F5";
       renderCtx.fillRect(cellsize[0], cellsize[1], cellsize[2], cellsize[3]);
     } else if (!fillStyle) {
@@ -1850,7 +1853,14 @@ export class Canvas {
       // 若单元格有条件格式 背景颜色
       fillStyle = checksCF.cellColor;
     }
-    if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+
+    // if (cell?.hide) {
+    //   renderCtx.fillStyle = "#F0F2F5";
+    // }
+    if (cell?.hide) {
+      // If cell is hidden, use gray background
+      renderCtx.fillStyle = "#F0F2F5";
+    } else if (this.sheetCtx.config?.rowhidden?.[r]) {
       // If row is hidden, use gray background
       renderCtx.fillStyle = "#F0F2F5";
     } else if (!fillStyle) {
@@ -1867,10 +1877,6 @@ export class Canvas {
       endX - startX + borderfix[2] - (isMerge ? 1 : 0) - 5, // Subtract 4px (2px from each side) from width
       endY - startY + borderfix[3] - 5, // Subtract 4px (2px from each side) from height
     ];
-
-    if (this.sheetCtx.config?.rowhidden?.[r] != null) {
-      renderCtx.fillStyle = "#F0F2F5";
-    }
 
     // 单元格渲染前，考虑到合并单元格会再次渲染一遍，统一放到这里
     if (
@@ -2312,7 +2318,8 @@ export class Canvas {
           pos_x,
           pos_y,
         },
-        r
+        r,
+        cell
       );
 
       renderCtx.restore();
@@ -2471,7 +2478,8 @@ export class Canvas {
         pos_x,
         pos_y,
       },
-      r
+      r,
+      cell
     );
 
     renderCtx.restore();
@@ -2640,7 +2648,8 @@ export class Canvas {
     textInfo: any,
     ctx: CanvasRenderingContext2D,
     option: any,
-    r: number
+    r: number,
+    cell: any
   ) {
     if (!textInfo) {
       return;
@@ -2680,7 +2689,9 @@ export class Canvas {
       if (word.inline === true && word.style) {
         ctx.font = word.style.fontset;
         // ctx.fillStyle = word.style.fc;
-        if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+        if (cell?.hide) {
+          ctx.fillStyle = "#97999B";
+        } else if (this.sheetCtx.config?.rowhidden?.[r] != null) {
           ctx.fillStyle = word.style.fc;
           ctx.fillStyle = "#97999B";
         } else {
@@ -2688,7 +2699,9 @@ export class Canvas {
         }
       } else {
         ctx.font = word.style;
-        if (this.sheetCtx.config?.rowhidden?.[r] != null) {
+        if (cell?.hide) {
+          ctx.fillStyle = "#97999B";
+        } else if (this.sheetCtx.config?.rowhidden?.[r] != null) {
           ctx.fillStyle = "#97999B";
         }
       }
