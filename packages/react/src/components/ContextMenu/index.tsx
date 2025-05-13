@@ -45,7 +45,7 @@ const ContextMenu: React.FC = () => {
     (name: string, i: number) => {
       const selection = context.luckysheet_select_save?.[0];
       if (name === "|") {
-        return <Divider key={`divider-${i}`} />;
+        return !selection?.column_select && <Divider key={`divider-${i}`} />;
       }
       if (name === "copy") {
         return (
