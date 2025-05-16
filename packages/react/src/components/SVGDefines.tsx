@@ -804,7 +804,7 @@ const SVGDefines: React.FC<{ currency: string }> = ({ currency }) => (
           y="11"
           transform="rotate(-180 21 11)"
         />
-        <path d="M12 21v-6M9 18h6/" />
+        <path d="M12 21v-6M9 18h6" />
       </symbol>
       <svg
         xmlns="http://www.w3.org/2000/svg"
