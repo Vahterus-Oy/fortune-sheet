@@ -58,7 +58,6 @@ export type WorkbookInstance = ReturnType<typeof generateAPIs>;
 type AdditionalProps = {
   onChange?: (data: SheetType[]) => void;
   onOp?: (op: Op[]) => void;
-  resetDatasheet?: () => void;
 };
 
 const triggerGroupValuesRefresh = (ctx: Context) => {
@@ -76,7 +75,7 @@ const concatProducer = (...producers: ((ctx: Context) => void)[]) => {
 };
 
 const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
-  ({ onChange, onOp, resetDatasheet, data: originalData, ...props }, ref) => {
+  ({ onChange, onOp, data: originalData, ...props }, ref) => {
     const globalCache = useRef<GlobalCache>({ undoList: [], redoList: [] });
     const cellInput = useRef<HTMLDivElement>(null);
     const fxInput = useRef<HTMLDivElement>(null);
@@ -456,15 +455,10 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
           draftCtx.defaultcolumnNum = mergedSettings.column;
           draftCtx.defaultrowNum = mergedSettings.row;
           draftCtx.defaultFontSize = mergedSettings.defaultFontSize;
-          if (
-            _.isEmpty(draftCtx.luckysheetfile) ||
-            originalData[0].isResetDatasheet
-          ) {
-            // const newData = produce(originalData, (draftData) => {
-            //   ensureSheetIndex(draftData, mergedSettings.generateSheetId);
-            // });
-            const newData = _.cloneDeep(originalData);
-            ensureSheetIndex(newData, mergedSettings.generateSheetId);
+          if (_.isEmpty(draftCtx.luckysheetfile)) {
+            const newData = produce(originalData, (draftData) => {
+              ensureSheetIndex(draftData, mergedSettings.generateSheetId);
+            });
             draftCtx.luckysheetfile = newData;
             newData.forEach((newDatum) => {
               const index = getSheetIndex(draftCtx, newDatum.id!) as number;
@@ -476,10 +470,6 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
                 cellMatrixData || undefined
               );
             });
-            if (originalData[0].isResetDatasheet) {
-              draftCtx.luckysheetfile = newData;
-              draftCtx.luckysheetfile[0].isResetDatasheet = false;
-            }
           }
           if (mergedSettings.devicePixelRatio > 0) {
             draftCtx.devicePixelRatio = mergedSettings.devicePixelRatio;
@@ -807,7 +797,6 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
                 <Toolbar
                   moreItemsOpen={moreToolbarItems !== null}
                   setMoreItems={setMoreToolbarItems}
-                  resetDatasheet={resetDatasheet}
                 />
               )}
               {mergedSettings.showFormulaBar && <FxEditor />}

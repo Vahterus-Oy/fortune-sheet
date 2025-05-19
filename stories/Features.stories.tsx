@@ -22,17 +22,8 @@ const Template: StoryFn<typeof Workbook> = ({
   const [collapsed, setCollapsed] = useState(true);
   const onChange = useCallback((d: Sheet[]) => {
     setData(d);
-    console.log("d", d[0].config?.rowhidden);
-    // console.log("hidden cell", d[0].celldata);
+    console.log("onchange", d[0]);
   }, []);
-  const resetSheet = () => {
-    setData([cell]);
-  };
-
-  // React.useEffect(() => {
-  //   console.log("d", data[0].config?.rowhidden);
-  //   console.log("hidden cell", data[0].celldata);
-  // }, [data]);
   return (
     <div
       style={{
@@ -86,7 +77,6 @@ const Template: StoryFn<typeof Workbook> = ({
             <Workbook
               {...args}
               data={data}
-              resetDatasheet={resetSheet}
               onChange={onChange}
               cellContextMenu={[
                 "locked",
@@ -112,7 +102,6 @@ const Template: StoryFn<typeof Workbook> = ({
                 "|",
                 "insert-row",
                 "|",
-                "reset-datasheet",
                 "help",
               ]}
             />
@@ -128,9 +117,9 @@ const Template: StoryFn<typeof Workbook> = ({
 // @ts-ignore
 // Basic.args = { data: [cell] };
 
-// export const Formula = Template.bind({});
-// // @ts-ignore
-// Formula.args = { data: [formula] };
+export const Formula = Template.bind({});
+// @ts-ignore
+Formula.args = { data: [formula] };
 
 export const Empty = Template.bind({});
 Empty.args = { data: [empty] };

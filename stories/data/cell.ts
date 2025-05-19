@@ -2,7 +2,6 @@ const data = {
   name: "Cell",
   defaultRowHeight: 25,
   defaultColWidth: 250,
-  isResetDatasheet: true,
   config: {
     // rowReadOnly: {
     //   2: 1,
