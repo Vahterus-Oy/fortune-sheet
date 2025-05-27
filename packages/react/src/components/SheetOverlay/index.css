@@ -52,7 +52,7 @@
   width: 100%;
   margin-top: 2px;
   display: none;
-  background-color: rgba(76, 76, 76, 0.1);
+  background-color: rgba(76, 76, 76, 0.2);
 }
 
 .fortune-col-header-wrap {
@@ -101,7 +101,7 @@
   height: 100%;
   margin-left: 0px;
   display: none;
-  background-color: rgba(76, 76, 76, 0.1);
+  background-color: rgba(76, 76, 76, 0.2);
 }
 
 .fortune-left-top {
@@ -201,7 +201,7 @@
   z-index: 15;
   border: 1px solid rgb(200, 200, 200, 0.15);
   margin: -1.1px 0 0 -0.5px;
-  background: rgba(211, 226, 247, 0.15);
+  background: rgba(1, 136, 251, 0.12);
   display: none;
   box-sizing: content-box;
 }
