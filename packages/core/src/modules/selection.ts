@@ -60,11 +60,21 @@ export function scrollToHighlightCell(ctx: Context, r: number, c: number) {
     const col = ctx.visibledatacolumn[c];
     const col_pre = c - 1 === -1 ? 0 : ctx.visibledatacolumn[c - 1];
 
-    if (col - scrollLeft - winW + 20 > 0) {
-      ctx.scrollLeft = col - winW + 20;
-    } else if (col_pre - scrollLeft - freezeW < 0) {
-      const scrollAmount = Math.max(20, freezeW);
-      ctx.scrollLeft = col_pre - scrollAmount;
+    // Handle last column case
+    if (c === ctx.visibledatacolumn.length - 1) {
+      // Ensure we don't scroll past the last visible column
+      const lastVisibleCol =
+        ctx.visibledatacolumn[ctx.visibledatacolumn.length - 1];
+      if (lastVisibleCol - scrollLeft - winW + 20 > 0) {
+        ctx.scrollLeft = lastVisibleCol - winW + 20;
+      }
+    } else {
+      if (col - scrollLeft - winW + 20 > 0) {
+        ctx.scrollLeft = col - winW + 20;
+      } else if (col_pre - scrollLeft - freezeW < 0) {
+        const scrollAmount = Math.max(20, freezeW);
+        ctx.scrollLeft = col_pre - scrollAmount;
+      }
     }
   }
 }

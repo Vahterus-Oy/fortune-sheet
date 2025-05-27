@@ -812,10 +812,20 @@ export function handleGlobalKeyDown(
       return;
     }
 
+    // Get the current column and max column
+    const currC = ctx.luckysheet_select_save?.[0]?.column_focus || 0;
+    const maxCol = ctx.luckysheetfile?.[0]?.column || 0;
+
     if (e.shiftKey) {
       moveHighlightCell(ctx, "right", -1, "rangeOfSelect");
     } else {
-      moveHighlightCell(ctx, "right", 1, "rangeOfSelect");
+      // If we're at the last column, move to the first column of the next row
+      if (currC >= maxCol - 1) {
+        moveHighlightCell(ctx, "down", 1, "rangeOfSelect");
+        moveHighlightCell(ctx, "right", -currC, "rangeOfSelect");
+      } else {
+        moveHighlightCell(ctx, "right", 1, "rangeOfSelect");
+      }
     }
     e.preventDefault();
   } else if (kstr === "F2") {
