@@ -1493,6 +1493,25 @@ const Toolbar: React.FC<{
         );
       }
 
+      if (name === "locked" || name === "locked-open") {
+        return (
+          <Button
+            iconId={name}
+            tooltip={tooltip}
+            key={name}
+            onClick={() =>
+              setContext((draftCtx) => {
+                toolbarItemClickHandler(name)?.(
+                  draftCtx,
+                  refs.cellInput.current!,
+                  refs.globalCache
+                );
+              })
+            }
+          />
+        );
+      }
+
       return (
         <Button
           iconId={name}

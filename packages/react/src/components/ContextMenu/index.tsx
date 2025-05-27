@@ -454,7 +454,7 @@ const ContextMenu: React.FC = () => {
             menuItems = ["hideSelected"];
           }
         } else {
-          menuItems = ["showHide", "hideSelected"];
+          menuItems = ["hideSelected", "showHide"];
         }
         return (
           selection?.row_select === true &&
