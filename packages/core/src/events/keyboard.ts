@@ -327,12 +327,11 @@ export function handleWithCtrlOrMetaKey(
     return;
   } else if (e.code === "KeyF") {
     // Ctrl + F  查找
-    ctx.showSearch = true;
+    // ctx.showSearch = true;
   } else if (e.code === "KeyH") {
     // Ctrl + H  替换
-    ctx.showReplace = true;
+    // ctx.showReplace = true;
     //   searchReplace.init();
-
     //   $("#luckysheet-search-replace #searchInput input").focus();
     // } else if (e.code === "KeyI") {
     //   // Ctrl + I  斜体
