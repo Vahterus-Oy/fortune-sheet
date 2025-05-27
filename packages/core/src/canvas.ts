@@ -1716,6 +1716,37 @@ export class Canvas {
       renderCtx.closePath();
     }
 
+    // In nullCellRender method, add this after the background color rendering and before the cell hooks:
+
+    // ... existing background color code ...
+
+    // Add lock icon rendering for null cells
+    const cell = flowdata?.[r]?.[c];
+    if (cell?.locked) {
+      const ls_w = 10 * this.sheetCtx.zoomRatio;
+      const ls_h = 10 * this.sheetCtx.zoomRatio;
+      const centerY = startY + offsetTop + (endY - startY - ls_h) / 2;
+
+      const lockIconPadding = 4;
+      const lockIconImage = new Image();
+      lockIconImage.src =
+        "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1sb2NrLWljb24gbHVjaWRlLWxvY2siPjxyZWN0IHdpZHRoPSIxOCIgaGVpZ2h0PSIxMSIgeD0iMyIgeT0iMTEiIHJ4PSIyIiByeT0iMiIgZmlsbD0iYmxhY2siLz48cGF0aCBkPSJNNyAxMVY3YzAtMi43NiAxLjI0LTUgNS01czUgMi4yNCA1IDV2NCIvPjwvc3ZnPg==";
+      renderCtx.drawImage(
+        lockIconImage,
+        endX + offsetLeft - ls_w - lockIconPadding,
+        centerY,
+        ls_w,
+        ls_h
+      );
+      renderCtx.fillStyle = "#666666";
+      renderCtx.fill();
+      renderCtx.lineWidth = this.sheetCtx.zoomRatio;
+      renderCtx.stroke();
+      renderCtx.closePath();
+    }
+
+    // ... continue with existing cell hooks and border rendering ...
+
     // 此单元格 与  溢出单元格关系
     const cellOverflow_colInObj = this.cellOverflow_colIn(
       cellOverflowMap,
