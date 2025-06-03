@@ -2106,9 +2106,13 @@ export function deleteSelectedCellText(ctx: Context): string {
             // Ensure the row exists
             if (!data[r]) data[r] = [];
 
-            // Replace the entire cell with an empty object
+            // Only clear the cell value
             if (data[r] && data[r][c]) {
-              data[r][c] = {}; // Fully replace cell with empty object
+              const cell = data[r]?.[c];
+              if (cell) {
+                cell.v = "";
+                cell.m = "";
+              }
             }
 
             if (hyperlinkMap && hyperlinkMap[`${r}_${c}`]) {
