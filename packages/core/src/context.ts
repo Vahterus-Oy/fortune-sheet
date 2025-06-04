@@ -553,8 +553,8 @@ function calcRowColSize(ctx: Context, rowCount: number, colCount: number) {
       firstcolumnlen = ctx.config.columnlen[c];
     } else {
       if (flowdata?.[0]?.[c]) {
-        if (firstcolumnlen > 300) {
-          firstcolumnlen = 300;
+        if (firstcolumnlen > 500) {
+          firstcolumnlen = 500;
         } else if (firstcolumnlen < ctx.defaultcollen) {
           firstcolumnlen = ctx.defaultcollen;
         }
