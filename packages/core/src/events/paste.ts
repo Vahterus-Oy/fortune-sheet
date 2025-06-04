@@ -1075,14 +1075,6 @@ function pasteHandlerOfCopyPaste(
   ctx: Context,
   copyRange: Context["luckysheet_copy_save"]
 ) {
-  // if (
-  //   !checkProtectionLockedRangeList(
-  //     ctx.luckysheet_select_save,
-  //     ctx.currentSheetId
-  //   )
-  // ) {
-  //   return;
-  // }
   const allowEdit = isAllowEdit(ctx);
   if (!allowEdit) return;
 
@@ -1378,8 +1370,25 @@ function pasteHandlerOfCopyPaste(
               }
             }
           }
+          const cloneCopiedValue = _.cloneDeep(value);
+          // Inside pasteHandlerOfCopyPaste function, where the cell data is being updated
+          if (x[c] != null) {
+            // Store the original cell data
+            const originalCell = _.cloneDeep(x[c]);
 
-          x[c] = _.cloneDeep(value);
+            // Update only specific properties while preserving the rest
+            x[c] = {
+              ...originalCell, // Keep all original properties
+              v: cloneCopiedValue?.v, // Update value
+              m: cloneCopiedValue?.m, // Update display value
+              locked: cloneCopiedValue?.locked, // Update locked status
+              hide: cloneCopiedValue?.hide, // Update hide status
+              bl: cloneCopiedValue?.bl, // Update bold status
+              it: cloneCopiedValue?.it, // Update italic status
+            };
+          } else {
+            x[c] = _.cloneDeep(value);
+          }
 
           if (value != null && copyHasMC && x?.[c]?.mc) {
             if (x?.[c]?.mc?.rs != null) {
