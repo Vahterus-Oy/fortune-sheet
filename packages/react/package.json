@@ -13,7 +13,7 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@vahterus/fortune-sheet-core": "1.0.11",
+    "@vahterus/fortune-sheet-core": "1.0.12",
     "@types/regenerator-runtime": "^0.13.6",
     "immer": "^9.0.12",
     "lodash": "^4.17.21",
