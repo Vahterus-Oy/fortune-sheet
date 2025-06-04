@@ -1729,7 +1729,7 @@ export class Canvas {
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1sb2NrLWljb24gbHVjaWRlLWxvY2siPjxyZWN0IHdpZHRoPSIxOCIgaGVpZ2h0PSIxMSIgeD0iMyIgeT0iMTEiIHJ4PSIyIiByeT0iMiIgZmlsbD0iYmxhY2siLz48cGF0aCBkPSJNNyAxMVY3YzAtMi43NiAxLjI0LTUgNS01czUgMi4yNCA1IDV2NCIvPjwvc3ZnPg==";
       renderCtx.drawImage(
         lockIconImage,
-        endX + offsetLeft - ls_w - lockIconPadding - 8,
+        endX + offsetLeft - ls_w - lockIconPadding - 6,
         centerY,
         ls_w,
         ls_h
@@ -2003,7 +2003,7 @@ export class Canvas {
         "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1sb2NrLWljb24gbHVjaWRlLWxvY2siPjxyZWN0IHdpZHRoPSIxOCIgaGVpZ2h0PSIxMSIgeD0iMyIgeT0iMTEiIHJ4PSIyIiByeT0iMiIgZmlsbD0iYmxhY2siLz48cGF0aCBkPSJNNyAxMVY3YzAtMi43NiAxLjI0LTUgNS01czUgMi4yNCA1IDV2NCIvPjwvc3ZnPg==";
       renderCtx.drawImage(
         lockIconImage,
-        endX + offsetLeft - ls_w - lockIconPadding + 8,
+        endX + offsetLeft - ls_w - lockIconPadding - 6,
         centerY,
         ls_w,
         ls_h
