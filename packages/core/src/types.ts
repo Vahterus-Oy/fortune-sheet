@@ -58,6 +58,12 @@ export type Cell = {
   hl?: { r: number; c: number; id: string };
   locked?: boolean;
   hide?: boolean;
+  key?: string;
+  sectionId?: string;
+  rowId?: string;
+  cellId?: string;
+  i18nKey?: string;
+  index?: string;
 } & CellStyle;
 
 export type CellWithRowAndCol = {
