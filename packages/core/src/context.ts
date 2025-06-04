@@ -478,7 +478,7 @@ export function defaultContext(refs: RefValues): Context {
       bl: 0,
       ct: { fa: "General", t: "n" },
       fc: "rgb(51, 51, 51)",
-      ff: 0,
+      ff: 1,
       fs: 11,
       ht: 1,
       it: 0,
