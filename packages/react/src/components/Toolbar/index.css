@@ -92,9 +92,9 @@
   z-index: 1004;
 }
 
-.fortune-toolbar-select::-webkit-scrollbar {
+/* .fortune-toolbar-select::-webkit-scrollbar {
   display: none;
-}
+} */
 
 .fortune-toolbar-select,
 .fortune-toolbar-color-picker {
@@ -102,6 +102,17 @@
   padding: 10px;
   border-radius: 6px;
   background: white;
+}
+
+.luckysheet-scrollbar-ltr::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.luckysheet-scrollbar-ltr::-webkit-scrollbar-thumb {
+    background-color: #97999B;
+    border: 1px solid #97999B;
+    border-radius: 25px;
 }
 
 .fortune-toolbar-select {
