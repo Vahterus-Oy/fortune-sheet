@@ -1385,6 +1385,7 @@ function pasteHandlerOfCopyPaste(
               hide: cloneCopiedValue?.hide, // Update hide status
               bl: cloneCopiedValue?.bl, // Update bold status
               it: cloneCopiedValue?.it, // Update italic status
+              ff: 1,
             };
           } else {
             x[c] = _.cloneDeep(value);
