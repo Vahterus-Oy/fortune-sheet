@@ -1354,6 +1354,7 @@ const data = {
         m: "1",
         key: "testing",
         locked: true,
+        sectionId: "section1",
       },
     },
     {
@@ -4130,6 +4131,7 @@ const data = {
         fc: "rgb(51, 51, 51)",
         ht: 1,
         vt: 1,
+        sectionId: "section1",
       },
     },
     {

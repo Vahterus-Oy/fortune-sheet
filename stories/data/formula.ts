@@ -480,6 +480,7 @@ const data = {
         fc: "rgb(0, 0, 0)",
         ht: 1,
         vt: 0,
+        sectionId: "asdasdasd",
       },
     },
     {

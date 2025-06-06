@@ -1775,13 +1775,10 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
             ) {
               rowHeightList[targetR] = targetRowHeight as number;
             }
-
             _.forEach(tr.querySelectorAll("td"), (td) => {
               // build cell from td
               const { className } = td;
-              const targetCell = ctx.luckysheetfile[0]?.data?.[r]?.[c];
-              const cloneTargetCell = _.cloneDeep(targetCell);
-              const cell: Cell = { ...cloneTargetCell };
+              const cell: Cell = {};
               const txt = td.innerText || td.innerHTML;
               if (_.trim(txt).length === 0) {
                 cell.v = undefined;
@@ -1895,7 +1892,6 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
               }
 
               if (_.isNil(data[r][c])) {
-                data[r][c] = cell;
                 // @ts-ignore
                 let rowspan = parseInt(td.getAttribute("rowspan"), 10);
                 // @ts-ignore
@@ -1911,6 +1907,11 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
 
                 const r_ab = ctx.luckysheet_select_save![0].row[0] + r;
                 const c_ab = ctx.luckysheet_select_save![0].column[0] + c;
+                const cellDestination =
+                  ctx.luckysheetfile[0]?.data?.[r_ab]?.[c_ab];
+                const cloneTargetCell = _.cloneDeep(cellDestination);
+                const cloneCell = _.cloneDeep(cell);
+                data[r][c] = { ...cloneTargetCell, ...cloneCell };
 
                 for (let rp = 0; rp < rowspan; rp += 1) {
                   for (let cp = 0; cp < colspan; cp += 1) {
