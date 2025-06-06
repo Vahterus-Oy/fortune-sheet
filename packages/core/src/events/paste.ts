@@ -466,13 +466,31 @@ function pasteHandler(ctx: Context, data: any, borderInfo?: any) {
             value = parseFloat(value);
           }
         }
+        // Clone the value to avoid reference issues
+        const cloneCopiedValue = _.cloneDeep(value);
+
         if (originCell) {
-          originCell.v = value;
-          if (originCell.ct != null && originCell.ct.fa != null) {
-            originCell.m = update(originCell.ct.fa, value);
-          } else {
-            originCell.m = value;
-          }
+          // Store the original cell data
+          const cloneOriginalCell = _.cloneDeep(originCell);
+
+          // Update only specific properties while preserving the rest
+          x[c + curC] = {
+            ...cloneOriginalCell, // Keep all original properties
+            v: cloneCopiedValue?.v, // Update value
+            m: cloneCopiedValue?.m, // Update display value
+            locked: cloneCopiedValue?.locked, // Update locked status
+            hide: cloneCopiedValue?.hide, // Update hide status
+            bl: cloneCopiedValue?.bl, // Update bold status
+            it: cloneCopiedValue?.it, // Update italic status
+            ff: 1,
+          };
+
+          // originCell.v = value;
+          // if (originCell.ct != null && originCell.ct.fa != null) {
+          //   originCell.m = update(originCell.ct.fa, value);
+          // } else {
+          //   originCell.m = value;
+          // }
 
           if (originCell.f != null && originCell.f.length > 0) {
             originCell.f = "";
@@ -1761,7 +1779,9 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
             _.forEach(tr.querySelectorAll("td"), (td) => {
               // build cell from td
               const { className } = td;
-              const cell: Cell = {};
+              const targetCell = ctx.luckysheetfile[0]?.data?.[r]?.[c];
+              const cloneTargetCell = _.cloneDeep(targetCell);
+              const cell: Cell = { ...cloneTargetCell };
               const txt = td.innerText || td.innerHTML;
               if (_.trim(txt).length === 0) {
                 cell.v = undefined;
@@ -1821,7 +1841,7 @@ export function handlePaste(ctx: Context, e: ClipboardEvent) {
                 // @ts-ignore
                 fa = locale_fontjson[fa];
                 if (_.isNil(fa)) {
-                  cell.ff = 0;
+                  cell.ff = 1;
                 } else {
                   cell.ff = fa;
                   break;

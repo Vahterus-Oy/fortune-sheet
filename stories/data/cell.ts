@@ -1352,6 +1352,8 @@ const data = {
         v: 1,
         ct: { fa: "General", t: "n" },
         m: "1",
+        key: "testing",
+        locked: true,
       },
     },
     {
