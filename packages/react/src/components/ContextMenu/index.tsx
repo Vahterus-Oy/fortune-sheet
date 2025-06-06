@@ -363,14 +363,17 @@ const ContextMenu: React.FC = () => {
           const sheetIndex = getSheetIndex(context, context.currentSheetId);
           if (sheetIndex == null) return false;
 
-          const addedRow =
-            context.luckysheetfile[sheetIndex]?.config?.addedRow || {};
+          const sheetData = context.luckysheetfile[sheetIndex]?.data;
+          if (!sheetData) return false;
 
-          // eslint-disable-next-line no-plusplus
-          for (let r = st_index; r <= ed_index; r++) {
-            if (!Object.prototype.hasOwnProperty.call(addedRow, r.toString())) {
-              return false;
-            }
+          // Check if all cells in the selected rows have isAddedRow property
+          for (let r = st_index; r <= ed_index; r += 1) {
+            const row = sheetData[r];
+            if (!row) return false;
+
+            // Check if any cell in the row has isAddedRow property
+            const hasAddedRow = row.some((cell) => cell?.isAddedRow === true);
+            if (!hasAddedRow) return false;
           }
 
           return true;

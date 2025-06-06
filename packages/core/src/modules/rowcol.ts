@@ -736,6 +736,12 @@ export function insertRowCol(
         delete templateCell.ps;
         delete templateCell.f;
       }
+      // Add isAddedRow property to each cell
+      if (templateCell) {
+        templateCell.isAddedRow = true;
+      } else {
+        templateCell = { isAddedRow: true };
+      }
       row.push(templateCell);
     }
     const cellBorderConfig = [];
@@ -847,15 +853,6 @@ export function insertRowCol(
         d
       );
     }
-
-    const addedRow = { ...(cfg.addedRow || {}) };
-
-    // eslint-disable-next-line no-plusplus
-    for (let r = 0; r < count; r++) {
-      const addedIndex = direction === "lefttop" ? index + r : index + 1 + r;
-      addedRow[addedIndex.toString()] = 1;
-    }
-    cfg.addedRow = addedRow;
   } else {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     type1 = "c";
@@ -1919,22 +1916,6 @@ export function deleteRowCol(
 
     // 删除选中行
     d.splice(start, slen);
-
-    // 🧹 Clean up deleted rows from addedRow config
-    if (cfg.addedRow) {
-      const updatedAddedRow: Record<string, number> = {};
-      Object.keys(cfg.addedRow).forEach((key) => {
-        const r = parseInt(key, 10);
-        if (r < start) {
-          updatedAddedRow[r.toString()] = cfg.addedRow![key];
-        } else if (r > end) {
-          // Shift remaining row keys up
-          updatedAddedRow[(r - slen).toString()] = cfg.addedRow![key];
-        }
-        // rows between [start, end] are deleted and not copied
-      });
-      cfg.addedRow = updatedAddedRow;
-    }
 
     // 删除行后，调整行数
     file.row = d.length;
