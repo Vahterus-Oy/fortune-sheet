@@ -61,7 +61,8 @@ import { useAlert } from "../../hooks/useAlert";
 const Toolbar: React.FC<{
   setMoreItems: React.Dispatch<React.SetStateAction<React.ReactNode>>;
   moreItemsOpen: boolean;
-}> = ({ setMoreItems, moreItemsOpen }) => {
+  helpLink?: string;
+}> = ({ setMoreItems, moreItemsOpen, helpLink }) => {
   const { context, setContext, refs, settings, handleUndo, handleRedo } =
     useContext(WorkbookContext);
   const contextRef = useRef(context);
@@ -1482,7 +1483,7 @@ const Toolbar: React.FC<{
         return (
           <Button iconId="" tooltip={tooltip} key={name}>
             <a
-              href="https://docs.vahterus.cloud/doc/data-sheets-wTwlEDXQrQ"
+              href={helpLink}
               target="_blank"
               rel="noopener noreferrer"
               className="fortune-toolbar-help"
@@ -1622,6 +1623,7 @@ const Toolbar: React.FC<{
       filter.clearFilter,
       firstSelection?.column_select,
       showAlert,
+      helpLink,
     ]
   );
 

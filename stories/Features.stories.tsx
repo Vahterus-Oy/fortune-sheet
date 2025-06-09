@@ -78,6 +78,7 @@ const Template: StoryFn<typeof Workbook> = ({
               {...args}
               data={data}
               onChange={onChange}
+              helpLink="https://docs.vahterus.cloud/doc/data-sheet-editor-LHvgPK5pxm"
               cellContextMenu={[
                 "locked",
                 "locked-open",

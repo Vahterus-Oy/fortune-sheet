@@ -58,6 +58,7 @@ export type WorkbookInstance = ReturnType<typeof generateAPIs>;
 type AdditionalProps = {
   onChange?: (data: SheetType[]) => void;
   onOp?: (op: Op[]) => void;
+  helpLink?: string;
 };
 
 const triggerGroupValuesRefresh = (ctx: Context) => {
@@ -75,7 +76,7 @@ const concatProducer = (...producers: ((ctx: Context) => void)[]) => {
 };
 
 const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
-  ({ onChange, onOp, data: originalData, ...props }, ref) => {
+  ({ onChange, onOp, data: originalData, helpLink, ...props }, ref) => {
     const globalCache = useRef<GlobalCache>({ undoList: [], redoList: [] });
     const cellInput = useRef<HTMLDivElement>(null);
     const fxInput = useRef<HTMLDivElement>(null);
@@ -797,6 +798,7 @@ const Workbook = React.forwardRef<WorkbookInstance, Settings & AdditionalProps>(
                 <Toolbar
                   moreItemsOpen={moreToolbarItems !== null}
                   setMoreItems={setMoreToolbarItems}
+                  helpLink={helpLink}
                 />
               )}
               {mergedSettings.showFormulaBar && <FxEditor />}
